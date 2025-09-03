@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração - Paróquia São Lourenço</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginForm" class="login-container">
+            <div class="login-box">
+                <div class="login-header">
+                    <i class="fas fa-church" style="font-size: 3em; color: #667eea; margin-bottom: 20px;"></i>
+                    <h1 style="margin-bottom: 10px; color: #333;">Paróquia São Lourenço</h1>
+                    <p style="color: #666; margin-bottom: 30px;">Interface Administrativa</p>
+                </div>
+                <h2><i class="fas fa-lock"></i> Login Administrativo</h2>
+                <form id="authForm">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Entrar
+                    </button>
+                </form>
+                <div id="authError" class="error-message"></div>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel" style="display: none;">
+            <!-- Header -->
+            <header class="header admin-header">
+                <div class="header-content">
+                    <h1><i class="fas fa-church"></i> Administração - Paróquia São Lourenço</h1>
+                    <div class="user-info">
+                        <span id="userEmail"></span>
+                        <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</button>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Admin Content Container -->
+            <div class="admin-content">
+                <!-- Navigation -->
+                <nav class="sidebar">
+                <ul class="nav-menu">
+                    <li><a href="#" data-section="avisos" class="nav-link active">
+                        <i class="fas fa-bullhorn"></i> Avisos Paroquiais
+                    </a></li>
+                    <li><a href="#" data-section="avisos-musica" class="nav-link">
+                        <i class="fas fa-music"></i> Avisos Música
+                    </a></li>
+                    <li><a href="#" data-section="clero" class="nav-link">
+                        <i class="fas fa-user-tie"></i> Clero
+                    </a></li>
+                    <li><a href="#" data-section="pastorais" class="nav-link">
+                        <i class="fas fa-hands-helping"></i> Pastorais
+                    </a></li>
+                    <li><a href="#" data-section="horarios" class="nav-link">
+                        <i class="fas fa-clock"></i> Horários das Missas
+                    </a></li>
+                    <li><a href="#" data-section="capelas" class="nav-link">
+                        <i class="fas fa-home"></i> Capelas
+                    </a></li>
+                    <li><a href="#" data-section="musicas" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i> Músicas do Mês
+                    </a></li>
+                    <li><a href="#" data-section="usuarios" class="nav-link">
+                        <i class="fas fa-users"></i> Usuários
+                    </a></li>
+                    <li><a href="#" data-section="administradores" class="nav-link">
+                        <i class="fas fa-user-shield"></i> Administradores
+                    </a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div id="loading" class="loading" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Carregando...
+                </div>
+
+                <!-- Avisos Paroquiais Section -->
+                <section id="avisos-section" class="content-section active">
+                    <div class="section-header">
+                        <h2><i class="fas fa-bullhorn"></i> Avisos Paroquiais</h2>
+                        <button class="btn-primary" onclick="openAvisoModal()">
+                            <i class="fas fa-plus"></i> Novo Aviso
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="avisosTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Descrição</th>
+                                    <th>Data</th>
+                                    <th>Prioridade</th>
+                                    <th>Imagem</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Avisos Música Section -->
+                <section id="avisos-musica-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-music"></i> Avisos Música</h2>
+                        <button class="btn-primary" onclick="openAvisoMusicaModal()">
+                            <i class="fas fa-plus"></i> Novo Aviso
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="avisosMusicaTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Descrição</th>
+                                    <th>Data</th>
+                                    <th>Prioridade</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Clero Section -->
+                <section id="clero-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-user-tie"></i> Clero</h2>
+                        <button class="btn-primary" onclick="openCleroModal()">
+                            <i class="fas fa-plus"></i> Novo Membro
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="cleroTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Cargo</th>
+                                    <th>Nome</th>
+                                    <th>Data Ordenação</th>
+                                    <th>História</th>
+                                    <th>Imagem</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Add more sections for other collections -->
+                <section id="pastorais-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-hands-helping"></i> Pastorais</h2>
+                        <button class="btn-primary" onclick="openPastoralModal()">
+                            <i class="fas fa-plus"></i> Nova Pastoral
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="pastoraisTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Contato</th>
+                                    <th>Coordenação</th>
+                                    <th>Texto</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="horarios-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-clock"></i> Horários das Missas</h2>
+                        <button class="btn-primary" onclick="openHorarioModal()">
+                            <i class="fas fa-plus"></i> Novo Horário
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="horariosTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Dia</th>
+                                    <th>Título</th>
+                                    <th>Ordem</th>
+                                    <th>Missas</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="capelas-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-home"></i> Capelas</h2>
+                        <button class="btn-primary" onclick="openCapelaModal()">
+                            <i class="fas fa-plus"></i> Nova Capela
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="capelasTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Imagem</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="musicas-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-calendar-alt"></i> Músicas do Mês</h2>
+                        <button class="btn-primary" onclick="openMusicaModal()">
+                            <i class="fas fa-plus"></i> Nova Entrada
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="musicasTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mês</th>
+                                    <th>Quantidade</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="usuarios-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> Usuários</h2>
+                    </div>
+                    <div class="table-container">
+                        <table id="usuariosTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Celular</th>
+                                    <th>Nascimento</th>
+                                    <th>Cidade</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Administradores Section -->
+                <section id="administradores-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-user-shield"></i> Administradores Autorizados</h2>
+                        <button class="btn-primary" onclick="openAdminModal()">
+                            <i class="fas fa-plus"></i> Adicionar Administrador
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="administradoresTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Nome</th>
+                                    <th>Adicionado em</th>
+                                    <th>Adicionado por</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for Avisos -->
+    <div id="avisoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="avisoModalTitle">Novo Aviso Paroquial</h3>
+                <span class="close" onclick="closeModal('avisoModal')">&times;</span>
+            </div>
+            <form id="avisoForm">
+                <div class="form-group">
+                    <label for="avisoTitulo">Título:</label>
+                    <input type="text" id="avisoTitulo" required>
+                </div>
+                <div class="form-group">
+                    <label for="avisoDescricao">Descrição:</label>
+                    <textarea id="avisoDescricao" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="avisoPrioridade">Prioridade:</label>
+                    <input type="number" id="avisoPrioridade" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="avisoImagem">Imagem:</label>
+                    <input type="file" id="avisoImagem" accept="image/*">
+                    <div id="avisoImagemPreview" class="image-preview"></div>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal('avisoModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Avisos Música -->
+    <div id="avisoMusicaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="avisoMusicaModalTitle">Novo Aviso Música</h3>
+                <span class="close" onclick="closeModal('avisoMusicaModal')">&times;</span>
+            </div>
+            <form id="avisoMusicaForm">
+                <div class="form-group">
+                    <label for="avisoMusicaTitulo">Título:</label>
+                    <input type="text" id="avisoMusicaTitulo" required>
+                </div>
+                <div class="form-group">
+                    <label for="avisoMusicaDescricao">Descrição:</label>
+                    <textarea id="avisoMusicaDescricao" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="avisoMusicaPrioridade">Prioridade:</label>
+                    <input type="number" id="avisoMusicaPrioridade" min="1" max="10" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal('avisoMusicaModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Clero -->
+    <div id="cleroModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="cleroModalTitle">Novo Membro do Clero</h3>
+                <span class="close" onclick="closeModal('cleroModal')">&times;</span>
+            </div>
+            <form id="cleroForm">
+                <div class="form-group">
+                    <label for="cleroCargo">Cargo:</label>
+                    <input type="text" id="cleroCargo" required placeholder="Ex: pároco, diácono, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="cleroNome">Nome:</label>
+                    <input type="text" id="cleroNome" required>
+                </div>
+                <div class="form-group">
+                    <label for="cleroDataOrdenacao">Data de Ordenação:</label>
+                    <input type="text" id="cleroDataOrdenacao" required>
+                </div>
+                <div class="form-group">
+                    <label for="cleroHistoria">História:</label>
+                    <textarea id="cleroHistoria" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="cleroImagem">Imagem:</label>
+                    <input type="file" id="cleroImagem" accept="image/*">
+                    <div id="cleroImagemPreview" class="image-preview"></div>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal('cleroModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Pastorais -->
+    <div id="pastoralModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="pastoralModalTitle">Nova Pastoral</h3>
+                <span class="close" onclick="closeModal('pastoralModal')">&times;</span>
+            </div>
+            <form id="pastoralForm">
+                <div class="form-group">
+                    <label for="pastoralNome">Nome da Pastoral:</label>
+                    <input type="text" id="pastoralNome" required>
+                </div>
+                <div class="form-group">
+                    <label for="pastoralContato">Contato:</label>
+                    <input type="text" id="pastoralContato" required>
+                </div>
+                <div class="form-group">
+                    <label for="pastoralCoordenacao">Coordenação:</label>
+                    <input type="text" id="pastoralCoordenacao" required>
+                </div>
+                <div class="form-group">
+                    <label for="pastoralTexto">Texto:</label>
+                    <textarea id="pastoralTexto" rows="6" required></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal('pastoralModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Horários -->
+    <div id="horarioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="horarioModalTitle">Novo Horário de Missa</h3>
+                <span class="close" onclick="closeModal('horarioModal')">&times;</span>
+            </div>
+            <form id="horarioForm">
+                <div class="form-group">
+                    <label for="horarioDia">Dia da Semana:</label>
+                    <select id="horarioDia" required>
+                        <option value="">Selecione...</option>
+                        <option value="domingos">Domingos</option>
+                        <option value="sábados">Sábados</option>
+                        <option value="segunda">Segunda-feira</option>
+                        <option value="terca_a_sexta">Terça a Sexta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="horarioTitulo">Título:</label>
+                    <input type="text" id="horarioTitulo" required>
+                </div>
+                <div class="form-group">
+                    <label for="horarioOrdem">Ordem:</label>
+                    <input type="number" id="horarioOrdem" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="horarioMissas">Horários das Missas (um por linha):</label>
+                    <textarea id="horarioMissas" rows="4" required placeholder="Ex:&#10;07:00&#10;19:00"></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal('horarioModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Administradores -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="adminModalTitle">Adicionar Administrador</h3>
+                <span class="close" onclick="closeModal('adminModal')">&times;</span>
+            </div>
+            <form id="adminForm">
+                <div class="form-group">
+                    <label for="adminEmail">Email:</label>
+                    <input type="email" id="adminEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminName">Nome (opcional):</label>
+                    <input type="text" id="adminName">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal('adminModal')">Cancelar</button>
+                    <button type="submit" class="btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+            </div> <!-- /admin-content -->
+        </div> <!-- /admin-panel -->
+    
+    </div> <!-- /container -->
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+    <!-- App Scripts -->
+    <script src="../config/firebase-config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/database.js"></script>
+    <script src="../js/database-extended.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>
