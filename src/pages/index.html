@@ -175,20 +175,15 @@
                             <i class="fas fa-plus"></i> Novo Aviso
                         </button>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="avisosTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th class="hidden sm:table-cell">Título</th>
-                                    <th class="hidden lg:table-cell">Descrição</th>
-                                    <th class="hidden md:table-cell">Data</th>
-                                    <th class="hidden lg:table-cell">Prioridade</th>
-                                    <th class="hidden lg:table-cell">Imagem</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="avisosCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="avisosEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-bullhorn"></i>
+                            <h3>Nenhum aviso cadastrado</h3>
+                            <p>Clique no botão "Novo Aviso" para adicionar o primeiro aviso.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -202,19 +197,15 @@
                             <i class="fas fa-plus"></i> Novo Aviso
                         </button>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="avisosMusicaTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Título</th>
-                                    <th>Descrição</th>
-                                    <th>Data</th>
-                                    <th>Prioridade</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="avisosMusicaCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="avisosMusicaEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-music"></i>
+                            <h3>Nenhum aviso musical cadastrado</h3>
+                            <p>Clique no botão "Novo Aviso" para adicionar o primeiro aviso musical.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -228,20 +219,15 @@
                             <i class="fas fa-plus"></i> Novo Membro
                         </button>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="cleroTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Cargo</th>
-                                    <th>Nome</th>
-                                    <th>Data Ordenação</th>
-                                    <th>História</th>
-                                    <th>Imagem</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="cleroCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="cleroEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-user-tie"></i>
+                            <h3>Nenhum membro do clero cadastrado</h3>
+                            <p>Clique no botão "Novo Membro" para adicionar o primeiro membro do clero.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -255,19 +241,15 @@
                             <i class="fas fa-plus"></i> Nova Pastoral
                         </button>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="pastoraisTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Contato</th>
-                                    <th>Coordenação</th>
-                                    <th>Texto</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="pastoraisCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="pastoraisEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-hands-helping"></i>
+                            <h3>Nenhuma pastoral cadastrada</h3>
+                            <p>Clique no botão "Nova Pastoral" para adicionar a primeira pastoral.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -280,19 +262,15 @@
                             <i class="fas fa-plus"></i> Novo Horário
                         </button>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="horariosTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Dia</th>
-                                    <th>Título</th>
-                                    <th>Ordem</th>
-                                    <th>Missas</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="horariosCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="horariosEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-clock"></i>
+                            <h3>Nenhum horário cadastrado</h3>
+                            <p>Clique no botão "Novo Horário" para adicionar o primeiro horário de missa.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -305,17 +283,15 @@
                             <i class="fas fa-plus"></i> Nova Capela
                         </button>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="capelasTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Imagem</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="capelasCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="capelasEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-home"></i>
+                            <h3>Nenhuma capela cadastrada</h3>
+                            <p>Clique no botão "Nova Capela" para adicionar a primeira capela.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -328,18 +304,15 @@
                             <i class="fas fa-plus"></i> Nova Entrada
                         </button>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="musicasTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Mês</th>
-                                    <th>Quantidade</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="musicasCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="musicasEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h3>Nenhuma música do mês cadastrada</h3>
+                            <p>Clique no botão "Nova Música" para adicionar a primeira música do mês.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -349,20 +322,15 @@
                             <i class="fas fa-users"></i> Usuários
                         </h2>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="usuariosTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Email</th>
-                                    <th>Celular</th>
-                                    <th>Nascimento</th>
-                                    <th>Cidade</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="usuariosCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="usuariosEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-users"></i>
+                            <h3>Nenhum usuário cadastrado</h3>
+                            <p>Os usuários serão exibidos aqui conforme se cadastram no sistema.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -376,19 +344,15 @@
                             <i class="fas fa-plus"></i> Adicionar Administrador
                         </button>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                        <table id="administradoresTable" class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Email</th>
-                                    <th>Nome</th>
-                                    <th>Adicionado em</th>
-                                    <th>Adicionado por</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="administradoresCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="administradoresEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-user-cog"></i>
+                            <h3>Nenhum administrador cadastrado</h3>
+                            <p>Clique no botão "Adicionar Admin" para adicionar o primeiro administrador.</p>
+                        </div>
                     </div>
                 </section>
             </main>

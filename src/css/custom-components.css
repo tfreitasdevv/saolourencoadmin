@@ -114,6 +114,218 @@
 }
 
 /* ====================================
+   SISTEMA DE CARDS PARA DADOS
+   ==================================== */
+
+/* Container de cards */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    padding: 4px;
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* Card individual */
+.data-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.data-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Header do card */
+.card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 16px;
+    line-height: 1.4;
+    flex: 1;
+    margin: 0;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* Corpo do card */
+.card-body {
+    padding: 16px 20px;
+}
+
+.card-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px 0;
+    gap: 12px;
+}
+
+.card-field:not(:last-child) {
+    border-bottom: 1px solid #f9fafb;
+}
+
+.card-label {
+    font-weight: 500;
+    color: #6b7280;
+    font-size: 13px;
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.card-value {
+    color: #1f2937;
+    font-size: 14px;
+    text-align: right;
+    flex: 1;
+    word-break: break-word;
+}
+
+/* Imagem no card */
+.card-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+}
+
+/* Badge de prioridade */
+.priority-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.priority-alta {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.priority-media {
+    background: #fff7ed;
+    color: #ea580c;
+    border: 1px solid #fed7aa;
+}
+
+.priority-baixa {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+/* Botões de ação do card */
+.card-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.card-btn-edit {
+    background: #3b82f6;
+    color: white;
+}
+
+.card-btn-edit:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.card-btn-delete {
+    background: #ef4444;
+    color: white;
+}
+
+.card-btn-delete:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* Estado vazio */
+.cards-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+}
+
+.cards-empty i {
+    font-size: 48px;
+    color: #d1d5db;
+    margin-bottom: 16px;
+}
+
+.cards-empty h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+.cards-empty p {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* Responsividade para cards */
+@media (max-width: 480px) {
+    .card-field {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .card-value {
+        text-align: left;
+    }
+    
+    .card-actions {
+        flex-direction: column;
+        gap: 4px;
+        min-width: 60px;
+    }
+    
+    .card-btn {
+        padding: 8px;
+        font-size: 11px;
+        justify-content: center;
+    }
+}
+
+/* ====================================
    COMPONENTES CUSTOMIZADOS
    ==================================== */
 

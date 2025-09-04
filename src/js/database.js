@@ -36,57 +36,136 @@ class DatabaseManager {
 
     // Load all initial data
     async loadAllData() {
-        await this.loadAvisos();
-        await this.loadAvisosMsuica();
-        await this.loadClero();
-        await this.loadPastorais();
-        await this.loadHorarios();
-        await this.loadCapelas();
-        await this.loadUsuarios();
+        console.log('🔄 Iniciando carregamento de todos os dados...');
+        console.log('📊 Firebase app:', window.firebase.app());
+        console.log('🗄️ Firestore instance:', window.db);
+        
+        try {
+            console.log('🎯 Carregando Avisos...');
+            await this.loadAvisos();
+            console.log('✅ Avisos carregados com sucesso');
+        } catch (error) {
+            console.error('❌ Erro ao carregar Avisos:', error);
+        }
+        
+        try {
+            console.log('🎵 Carregando Avisos Música...');
+            await this.loadAvisosMsuica();
+            console.log('✅ Avisos Música carregados com sucesso');
+        } catch (error) {
+            console.error('❌ Erro ao carregar Avisos Música:', error);
+        }
+        
+        try {
+            await this.loadClero();
+            await this.loadPastorais();
+            await this.loadHorarios();
+            await this.loadCapelas();
+            await this.loadMusicas();
+            await this.loadUsuarios();
+            console.log('✅ Todas as outras coleções carregadas');
+        } catch (error) {
+            console.error('❌ Erro ao carregar outras coleções:', error);
+        }
     }
 
     // Avisos Paroquiais
     async loadAvisos() {
         try {
+            console.log('🎯 [DEBUG] Iniciando carregamento de avisos...');
+            console.log('🎯 [DEBUG] db disponível:', !!window.db);
+            console.log('🎯 [DEBUG] this.collections.avisos:', this.collections.avisos);
+            
             this.showLoading();
+            
+            const cardsContainer = document.getElementById('avisosCards');
+            const emptyState = document.getElementById('avisosEmpty');
+            
+            console.log('🎯 [DEBUG] Elementos DOM encontrados:', { cardsContainer, emptyState });
+            
+            if (!cardsContainer) {
+                throw new Error('Elemento avisosCards não encontrado');
+            }
+            
+            console.log('🎯 [DEBUG] Executando consulta Firebase...');
             const snapshot = await db.collection(this.collections.avisos)
-                .orderBy('data', 'desc')
                 .get();
             
-            const tbody = document.querySelector('#avisosTable tbody');
-            tbody.innerHTML = '';
+            console.log('🎯 [DEBUG] Snapshot obtido:', snapshot.size, 'documentos');
+            cardsContainer.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const row = this.createAvisoRow(doc.id, data);
-                tbody.appendChild(row);
-            });
+            if (snapshot.empty) {
+                console.log('📭 [DEBUG] Nenhum aviso encontrado, mostrando estado vazio');
+                if (emptyState) emptyState.style.display = 'block';
+            } else {
+                console.log('📄 [DEBUG] Renderizando', snapshot.size, 'avisos');
+                if (emptyState) emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    console.log('📄 [DEBUG] Processando aviso:', doc.id, data);
+                    const card = this.createAvisoCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
         } catch (error) {
-            console.error('Erro ao carregar avisos:', error);
-            alert('Erro ao carregar avisos');
+            console.error('❌ [DEBUG] Erro ao carregar avisos:', error);
+            console.error('❌ [DEBUG] Stack trace:', error.stack);
+            alert('Erro ao carregar avisos: ' + error.message);
         } finally {
             this.hideLoading();
         }
     }
 
-    createAvisoRow(id, data) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${data.titulo || ''}</td>
-            <td>${data.descricao ? data.descricao.substring(0, 100) + '...' : ''}</td>
-            <td>${this.formatDate(data.data)}</td>
-            <td>${data.prioridade || ''}</td>
-            <td>${data.imagem ? '<img src="' + data.imagem + '" alt="Imagem">' : 'Sem imagem'}</td>
-            <td>
-                <button class="btn-edit" onclick="editAviso('${id}')">
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn-danger" onclick="deleteAviso('${id}')">
-                    <i class="fas fa-trash"></i> Excluir
-                </button>
-            </td>
+    createAvisoCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        
+        // Corrigir o tratamento da prioridade para evitar erro toLowerCase
+        let priorityClass = 'priority-baixa';
+        if (data.prioridade && typeof data.prioridade === 'string') {
+            priorityClass = `priority-${data.prioridade.toLowerCase()}`;
+        } else if (data.prioridade && typeof data.prioridade === 'number') {
+            priorityClass = `priority-${data.prioridade}`;
+        }
+        
+        const imageElement = data.imagem ? 
+            `<img src="${data.imagem}" alt="Imagem do aviso" class="card-image">` : 
+            '<div class="text-gray-400 text-xs">Sem imagem</div>';
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">${data.titulo || 'Sem título'}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="editAviso('${id}')" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="card-btn card-btn-delete" onclick="deleteAviso('${id}')" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">Descrição:</span>
+                    <span class="card-value">${data.descricao ? (data.descricao.length > 100 ? data.descricao.substring(0, 100) + '...' : data.descricao) : 'Sem descrição'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Data:</span>
+                    <span class="card-value">${this.formatDate(data.data)}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Prioridade:</span>
+                    <span class="card-value">
+                        <span class="priority-badge ${priorityClass}">${data.prioridade || 'Não definida'}</span>
+                    </span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Imagem:</span>
+                    <span class="card-value">${imageElement}</span>
+                </div>
+            </div>
         `;
-        return row;
+        return card;
     }
 
     async saveAviso(avisoData, id = null) {
@@ -128,40 +207,88 @@ class DatabaseManager {
     // Avisos Música
     async loadAvisosMsuica() {
         try {
+            console.log('🎵 [DEBUG] Iniciando carregamento de avisos música...');
+            console.log('🎵 [DEBUG] db disponível:', !!window.db);
+            console.log('🎵 [DEBUG] this.collections.avisosMsuica:', this.collections.avisosMsuica);
+            
+            const cardsContainer = document.getElementById('avisosMusicaCards');
+            const emptyState = document.getElementById('avisosMusicaEmpty');
+            
+            console.log('🎵 [DEBUG] Elementos DOM encontrados:', { cardsContainer, emptyState });
+            
+            if (!cardsContainer) {
+                throw new Error('Elemento avisosMusicaCards não encontrado');
+            }
+            
+            console.log('🎵 [DEBUG] Executando consulta Firebase...');
             const snapshot = await db.collection(this.collections.avisosMsuica)
-                .orderBy('data', 'desc')
                 .get();
             
-            const tbody = document.querySelector('#avisosMusicaTable tbody');
-            tbody.innerHTML = '';
+            console.log('🎵 [DEBUG] Snapshot avisos música obtido:', snapshot.size, 'documentos');
+            cardsContainer.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const row = this.createAvisoMusicaRow(doc.id, data);
-                tbody.appendChild(row);
-            });
+            if (snapshot.empty) {
+                console.log('📭 [DEBUG] Nenhum aviso música encontrado, mostrando estado vazio');
+                if (emptyState) emptyState.style.display = 'block';
+            } else {
+                console.log('📄 [DEBUG] Renderizando', snapshot.size, 'avisos música');
+                if (emptyState) emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    console.log('📄 [DEBUG] Processando aviso música:', doc.id, data);
+                    const card = this.createAvisoMusicaCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
         } catch (error) {
-            console.error('Erro ao carregar avisos música:', error);
+            console.error('❌ [DEBUG] Erro ao carregar avisos música:', error);
+            console.error('❌ [DEBUG] Stack trace:', error.stack);
+            alert('Erro ao carregar avisos música: ' + error.message);
         }
     }
 
-    createAvisoMusicaRow(id, data) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${data.titulo || ''}</td>
-            <td>${data.descricao ? data.descricao.substring(0, 100) + '...' : ''}</td>
-            <td>${this.formatDate(data.data)}</td>
-            <td>${data.prioridade || ''}</td>
-            <td>
-                <button class="btn-edit" onclick="editAvisoMusica('${id}')">
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn-danger" onclick="deleteAvisoMusica('${id}')">
-                    <i class="fas fa-trash"></i> Excluir
-                </button>
-            </td>
+    createAvisoMusicaCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        
+        // Corrigir o tratamento da prioridade para evitar erro toLowerCase
+        let priorityClass = 'priority-baixa';
+        if (data.prioridade && typeof data.prioridade === 'string') {
+            priorityClass = `priority-${data.prioridade.toLowerCase()}`;
+        } else if (data.prioridade && typeof data.prioridade === 'number') {
+            priorityClass = `priority-${data.prioridade}`;
+        }
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">${data.titulo || 'Sem título'}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="editAvisoMusica('${id}')" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="card-btn card-btn-delete" onclick="deleteAvisoMusica('${id}')" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">Descrição:</span>
+                    <span class="card-value">${data.descricao ? (data.descricao.length > 100 ? data.descricao.substring(0, 100) + '...' : data.descricao) : 'Sem descrição'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Data:</span>
+                    <span class="card-value">${this.formatDate(data.data)}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Prioridade:</span>
+                    <span class="card-value">
+                        <span class="priority-badge ${priorityClass}">${data.prioridade || 'Não definida'}</span>
+                    </span>
+                </div>
+            </div>
         `;
-        return row;
+        return card;
     }
 
     // Clero
@@ -169,37 +296,65 @@ class DatabaseManager {
         try {
             const snapshot = await db.collection(this.collections.clero).get();
             
-            const tbody = document.querySelector('#cleroTable tbody');
-            tbody.innerHTML = '';
+            const cardsContainer = document.getElementById('cleroCards');
+            const emptyState = document.getElementById('cleroEmpty');
+            cardsContainer.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const row = this.createCleroRow(doc.id, data);
-                tbody.appendChild(row);
-            });
+            if (snapshot.empty) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = this.createCleroCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
         } catch (error) {
             console.error('Erro ao carregar clero:', error);
         }
     }
 
-    createCleroRow(id, data) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${id}</td>
-            <td>${data.nome || ''}</td>
-            <td>${data['data ordenação'] || ''}</td>
-            <td>${data.historia ? data.historia.substring(0, 100) + '...' : ''}</td>
-            <td>${data.imagem ? '<img src="' + data.imagem + '" alt="Imagem">' : 'Sem imagem'}</td>
-            <td>
-                <button class="btn-edit" onclick="editClero('${id}')">
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn-danger" onclick="deleteClero('${id}')">
-                    <i class="fas fa-trash"></i> Excluir
-                </button>
-            </td>
+    createCleroCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        
+        const imageElement = data.imagem ? 
+            `<img src="${data.imagem}" alt="Foto de ${data.nome}" class="card-image">` : 
+            '<div class="text-gray-400 text-xs">Sem foto</div>';
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">${data.nome || 'Nome não informado'}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="editClero('${id}')" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="card-btn card-btn-delete" onclick="deleteClero('${id}')" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">Cargo:</span>
+                    <span class="card-value">${id || 'Não definido'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Ordenação:</span>
+                    <span class="card-value">${data['data ordenação'] || 'Não informada'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">História:</span>
+                    <span class="card-value">${data.historia ? (data.historia.length > 100 ? data.historia.substring(0, 100) + '...' : data.historia) : 'Sem história'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Foto:</span>
+                    <span class="card-value">${imageElement}</span>
+                </div>
+            </div>
         `;
-        return row;
+        return card;
     }
 
     // Pastorais
@@ -207,36 +362,115 @@ class DatabaseManager {
         try {
             const snapshot = await db.collection(this.collections.pastorais).get();
             
-            const tbody = document.querySelector('#pastoraisTable tbody');
-            tbody.innerHTML = '';
+            const cardsContainer = document.getElementById('pastoraisCards');
+            const emptyState = document.getElementById('pastoraisEmpty');
+            cardsContainer.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const row = this.createPastoralRow(doc.id, data);
-                tbody.appendChild(row);
-            });
+            if (snapshot.empty) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = this.createPastoralCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
         } catch (error) {
             console.error('Erro ao carregar pastorais:', error);
         }
     }
 
-    createPastoralRow(id, data) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${id}</td>
-            <td>${data.contato || ''}</td>
-            <td>${data.coordenacao || ''}</td>
-            <td>${data.texto ? data.texto.substring(0, 100) + '...' : ''}</td>
-            <td>
-                <button class="btn-edit" onclick="editPastoral('${id}')">
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn-danger" onclick="deletePastoral('${id}')">
-                    <i class="fas fa-trash"></i> Excluir
-                </button>
-            </td>
+    createPastoralCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">${id || 'Nome não informado'}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="editPastoral('${id}')" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="card-btn card-btn-delete" onclick="deletePastoral('${id}')" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">Contato:</span>
+                    <span class="card-value">${data.contato || 'Não informado'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Coordenação:</span>
+                    <span class="card-value">${data.coordenacao || 'Não informada'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Descrição:</span>
+                    <span class="card-value">${data.texto ? (data.texto.length > 100 ? data.texto.substring(0, 100) + '...' : data.texto) : 'Sem descrição'}</span>
+                </div>
+            </div>
         `;
-        return row;
+        return card;
+    }
+
+    // Músicas do Mês
+    async loadMusicas() {
+        try {
+            const snapshot = await db.collection(this.collections.musicas).get();
+            
+            const cardsContainer = document.getElementById('musicasCards');
+            const emptyState = document.getElementById('musicasEmpty');
+            cardsContainer.innerHTML = '';
+            
+            if (snapshot.empty) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = this.createMusicaCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao carregar músicas:', error);
+        }
+    }
+
+    createMusicaCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">Músicas de ${data.mes || id}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="editMusica('${id}')" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="card-btn card-btn-delete" onclick="deleteMusica('${id}')" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">ID:</span>
+                    <span class="card-value">${id}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Mês:</span>
+                    <span class="card-value">${data.mes || 'Não informado'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Quantidade:</span>
+                    <span class="card-value">${data.quantidade || 'Não informada'}</span>
+                </div>
+            </div>
+        `;
+        return card;
     }
 
     // File upload
@@ -289,21 +523,5 @@ window.editAvisoMusica = async function(id) {
 };
 
 window.deleteAvisoMusica = function(id) {
-    // Implementar função similar
-};
-
-window.editClero = async function(id) {
-    // Implementar função similar
-};
-
-window.deleteClero = function(id) {
-    // Implementar função similar
-};
-
-window.editPastoral = async function(id) {
-    // Implementar função similar
-};
-
-window.deletePastoral = function(id) {
     // Implementar função similar
 };

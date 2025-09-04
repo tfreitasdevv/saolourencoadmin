@@ -107,38 +107,59 @@ class ExtendedDatabaseManager extends DatabaseManager {
                 .orderBy('ordem', 'asc')
                 .get();
             
-            const tbody = document.querySelector('#horariosTable tbody');
-            tbody.innerHTML = '';
+            const cardsContainer = document.getElementById('horariosCards');
+            const emptyState = document.getElementById('horariosEmpty');
+            cardsContainer.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const row = this.createHorarioRow(doc.id, data);
-                tbody.appendChild(row);
-            });
+            if (snapshot.empty) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = this.createHorarioCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
         } catch (error) {
             console.error('Erro ao carregar horários:', error);
         }
     }
 
-    createHorarioRow(id, data) {
-        const row = document.createElement('tr');
-        const missas = Array.isArray(data.missas) ? data.missas.join(', ') : '';
+    createHorarioCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
         
-        row.innerHTML = `
-            <td>${id}</td>
-            <td>${data.titulo || ''}</td>
-            <td>${data.ordem || ''}</td>
-            <td>${missas}</td>
-            <td>
-                <button class="btn-edit" onclick="editHorario('${id}')">
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn-danger" onclick="deleteHorario('${id}')">
-                    <i class="fas fa-trash"></i> Excluir
-                </button>
-            </td>
+        const missas = Array.isArray(data.missas) ? data.missas.join(', ') : (data.missas || 'Nenhuma missa definida');
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">${data.titulo || id}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="editHorario('${id}')" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="card-btn card-btn-delete" onclick="deleteHorario('${id}')" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">Dia:</span>
+                    <span class="card-value">${id}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Ordem:</span>
+                    <span class="card-value">${data.ordem || 'Não definida'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Missas:</span>
+                    <span class="card-value">${missas}</span>
+                </div>
+            </div>
         `;
-        return row;
+        return card;
     }
 
     async saveHorario(data, dia) {
@@ -176,34 +197,57 @@ class ExtendedDatabaseManager extends DatabaseManager {
         try {
             const snapshot = await db.collection(this.collections.capelas).get();
             
-            const tbody = document.querySelector('#capelasTable tbody');
-            tbody.innerHTML = '';
+            const cardsContainer = document.getElementById('capelasCards');
+            const emptyState = document.getElementById('capelasEmpty');
+            cardsContainer.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const row = this.createCapelaRow(doc.id, data);
-                tbody.appendChild(row);
-            });
+            if (snapshot.empty) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = this.createCapelaCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
         } catch (error) {
             console.error('Erro ao carregar capelas:', error);
         }
     }
 
-    createCapelaRow(id, data) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${id}</td>
-            <td>${data.imagem ? '<img src="' + data.imagem + '" alt="Imagem">' : 'Sem imagem'}</td>
-            <td>
-                <button class="btn-edit" onclick="editCapela('${id}')">
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn-danger" onclick="deleteCapela('${id}')">
-                    <i class="fas fa-trash"></i> Excluir
-                </button>
-            </td>
+    createCapelaCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        
+        const imageElement = data.imagem ? 
+            `<img src="${data.imagem}" alt="Imagem da ${id}" class="card-image">` : 
+            '<div class="text-gray-400 text-xs">Sem imagem</div>';
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">${id}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="editCapela('${id}')" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="card-btn card-btn-delete" onclick="deleteCapela('${id}')" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">Nome:</span>
+                    <span class="card-value">${id}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Imagem:</span>
+                    <span class="card-value">${imageElement}</span>
+                </div>
+            </div>
         `;
-        return row;
+        return card;
     }
 
     async saveCapela(data, nome) {
@@ -243,36 +287,60 @@ class ExtendedDatabaseManager extends DatabaseManager {
                 .orderBy('nome', 'asc')
                 .get();
             
-            const tbody = document.querySelector('#usuariosTable tbody');
-            tbody.innerHTML = '';
+            const cardsContainer = document.getElementById('usuariosCards');
+            const emptyState = document.getElementById('usuariosEmpty');
+            cardsContainer.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const row = this.createUsuarioRow(doc.id, data);
-                tbody.appendChild(row);
-            });
+            if (snapshot.empty) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = this.createUsuarioCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
         } catch (error) {
             console.error('Erro ao carregar usuários:', error);
         }
     }
 
-    createUsuarioRow(id, data) {
-        const row = document.createElement('tr');
+    createUsuarioCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        
         const endereco = data.endereço || {};
         
-        row.innerHTML = `
-            <td>${data.nome || ''}</td>
-            <td>${data.email || ''}</td>
-            <td>${data.celular || ''}</td>
-            <td>${this.formatDate(data.nascimento)}</td>
-            <td>${endereco.cidade || ''}</td>
-            <td>
-                <button class="btn-edit" onclick="viewUsuario('${id}')">
-                    <i class="fas fa-eye"></i> Visualizar
-                </button>
-            </td>
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">${data.nome || 'Nome não informado'}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="viewUsuario('${id}')" title="Visualizar">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">Email:</span>
+                    <span class="card-value">${data.email || 'Não informado'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Celular:</span>
+                    <span class="card-value">${data.celular || 'Não informado'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Nascimento:</span>
+                    <span class="card-value">${this.formatDate(data.nascimento)}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Cidade:</span>
+                    <span class="card-value">${endereco.cidade || 'Não informada'}</span>
+                </div>
+            </div>
         `;
-        return row;
+        return card;
     }
 }
 
@@ -369,24 +437,49 @@ window.closeAdminModal = function() {
 window.loadAdministradores = async function() {
     try {
         const administradores = await authManager.getAuthorizedUsersList();
-        const tbody = document.querySelector('#administradoresTable tbody');
-        tbody.innerHTML = '';
+        const cardsContainer = document.getElementById('administradoresCards');
+        const emptyState = document.getElementById('administradoresEmpty');
+        cardsContainer.innerHTML = '';
         
-        administradores.forEach(admin => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${admin.email}</td>
-                <td>${admin.name || ''}</td>
-                <td>${admin.addedAt ? new Date(admin.addedAt.toDate()).toLocaleDateString('pt-BR') : ''}</td>
-                <td>${admin.addedBy || ''}</td>
-                <td>
-                    <button class="btn-delete" onclick="removeAdministrador('${admin.email}')">
-                        <i class="fas fa-trash"></i> Remover
-                    </button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
+        if (administradores.length === 0) {
+            emptyState.style.display = 'block';
+        } else {
+            emptyState.style.display = 'none';
+            administradores.forEach(admin => {
+                const card = document.createElement('div');
+                card.className = 'data-card';
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">${admin.name || admin.email}</h3>
+                        <div class="card-actions">
+                            <button class="card-btn card-btn-delete" onclick="removeAdministrador('${admin.email}')" title="Remover">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-field">
+                            <span class="card-label">Email:</span>
+                            <span class="card-value">${admin.email}</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Nome:</span>
+                            <span class="card-value">${admin.name || 'Não informado'}</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Adicionado em:</span>
+                            <span class="card-value">${admin.addedAt ? new Date(admin.addedAt.toDate()).toLocaleDateString('pt-BR') : 'Não informado'}</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Adicionado por:</span>
+                            <span class="card-value">${admin.addedBy || 'Não informado'}</span>
+                        </div>
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
+            });
+        }
     } catch (error) {
         console.error('Erro ao carregar administradores:', error);
         alert('Erro ao carregar lista de administradores');
