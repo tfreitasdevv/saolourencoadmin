@@ -129,25 +129,203 @@
             background-color: #dc2626;
         }
         
+        /* Modais modernos com Tailwind */
         .modal {
             position: fixed;
             inset: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 50;
+            padding: 16px;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        .modal.hidden {
+            animation: modalFadeOut 0.2s ease-in;
         }
         .modal-content {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            max-width: 28rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            max-width: 32rem;
             width: 100%;
-            margin: 16px;
-            padding: 24px;
             max-height: 90vh;
+            overflow: hidden;
+            transform: scale(1);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        .modal.hidden .modal-content {
+            animation: modalSlideOut 0.2s ease-in;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes modalFadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        @keyframes modalSlideIn {
+            from { 
+                transform: scale(0.95) translateY(-20px); 
+                opacity: 0;
+            }
+            to { 
+                transform: scale(1) translateY(0); 
+                opacity: 1;
+            }
+        }
+        @keyframes modalSlideOut {
+            from { 
+                transform: scale(1) translateY(0); 
+                opacity: 1;
+            }
+            to { 
+                transform: scale(0.95) translateY(-20px); 
+                opacity: 0;
+            }
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px 24px 20px 24px;
+            border-radius: 16px 16px 0 0;
+            position: relative;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding-right: 40px;
+        }
+        .modal-header .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .modal-header .close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        .modal-body {
+            padding: 24px;
+            max-height: 60vh;
             overflow-y: auto;
+        }
+        .modal-buttons {
+            padding: 16px 24px 24px 24px;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        /* Inputs e formulários nos modais */
+        .modal .form-group {
+            margin-bottom: 20px;
+        }
+        .modal .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .modal .form-group input,
+        .modal .form-group textarea,
+        .modal .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        .modal .form-group input:focus,
+        .modal .form-group textarea:focus,
+        .modal .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .modal .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Botões nos modais */
+        .modal .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .modal .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .modal .btn-secondary {
+            background: #f3f4f6;
+            color: #6b7280;
+            border: 1px solid #d1d5db;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .modal .btn-secondary:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+        
+        /* Preview de imagem */
+        .image-preview {
+            margin-top: 12px;
+            padding: 12px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-preview:empty::before {
+            content: "Nenhuma imagem selecionada";
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
         }
     </style>
 </head>
@@ -478,29 +656,31 @@
                 <h3 id="avisoModalTitle">Novo Aviso Paroquial</h3>
                 <span class="close" onclick="closeModal('avisoModal')">&times;</span>
             </div>
-            <form id="avisoForm">
-                <div class="form-group">
-                    <label for="avisoTitulo">Título:</label>
-                    <input type="text" id="avisoTitulo" required>
-                </div>
-                <div class="form-group">
-                    <label for="avisoDescricao">Descrição:</label>
-                    <textarea id="avisoDescricao" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="avisoPrioridade">Prioridade:</label>
-                    <input type="number" id="avisoPrioridade" min="1" max="10" required>
-                </div>
-                <div class="form-group">
-                    <label for="avisoImagem">Imagem:</label>
-                    <input type="file" id="avisoImagem" accept="image/*">
-                    <div id="avisoImagemPreview" class="image-preview"></div>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-secondary" onclick="closeModal('avisoModal')">Cancelar</button>
-                    <button type="submit" class="btn-primary">Salvar</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <form id="avisoForm">
+                    <div class="form-group">
+                        <label for="avisoTitulo">Título:</label>
+                        <input type="text" id="avisoTitulo" required placeholder="Digite o título do aviso">
+                    </div>
+                    <div class="form-group">
+                        <label for="avisoDescricao">Descrição:</label>
+                        <textarea id="avisoDescricao" rows="4" required placeholder="Digite a descrição completa do aviso"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="avisoPrioridade">Prioridade:</label>
+                        <input type="number" id="avisoPrioridade" min="1" max="10" required placeholder="1 (menor) a 10 (maior)">
+                    </div>
+                    <div class="form-group">
+                        <label for="avisoImagem">Imagem:</label>
+                        <input type="file" id="avisoImagem" accept="image/*">
+                        <div id="avisoImagemPreview" class="image-preview"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="closeModal('avisoModal')">Cancelar</button>
+                <button type="submit" class="btn-primary" form="avisoForm">Salvar</button>
+            </div>
         </div>
     </div>
 
@@ -511,24 +691,26 @@
                 <h3 id="avisoMusicaModalTitle">Novo Aviso Música</h3>
                 <span class="close" onclick="closeModal('avisoMusicaModal')">&times;</span>
             </div>
-            <form id="avisoMusicaForm">
-                <div class="form-group">
-                    <label for="avisoMusicaTitulo">Título:</label>
-                    <input type="text" id="avisoMusicaTitulo" required>
-                </div>
-                <div class="form-group">
-                    <label for="avisoMusicaDescricao">Descrição:</label>
-                    <textarea id="avisoMusicaDescricao" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="avisoMusicaPrioridade">Prioridade:</label>
-                    <input type="number" id="avisoMusicaPrioridade" min="1" max="10" required>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-secondary" onclick="closeModal('avisoMusicaModal')">Cancelar</button>
-                    <button type="submit" class="btn-primary">Salvar</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <form id="avisoMusicaForm">
+                    <div class="form-group">
+                        <label for="avisoMusicaTitulo">Título:</label>
+                        <input type="text" id="avisoMusicaTitulo" required placeholder="Digite o título do aviso">
+                    </div>
+                    <div class="form-group">
+                        <label for="avisoMusicaDescricao">Descrição:</label>
+                        <textarea id="avisoMusicaDescricao" rows="4" required placeholder="Digite a descrição do aviso musical"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="avisoMusicaPrioridade">Prioridade:</label>
+                        <input type="number" id="avisoMusicaPrioridade" min="1" max="10" required placeholder="1 (menor) a 10 (maior)">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="closeModal('avisoMusicaModal')">Cancelar</button>
+                <button type="submit" class="btn-primary" form="avisoMusicaForm">Salvar</button>
+            </div>
         </div>
     </div>
 
@@ -539,33 +721,35 @@
                 <h3 id="cleroModalTitle">Novo Membro do Clero</h3>
                 <span class="close" onclick="closeModal('cleroModal')">&times;</span>
             </div>
-            <form id="cleroForm">
-                <div class="form-group">
-                    <label for="cleroCargo">Cargo:</label>
-                    <input type="text" id="cleroCargo" required placeholder="Ex: pároco, diácono, etc.">
-                </div>
-                <div class="form-group">
-                    <label for="cleroNome">Nome:</label>
-                    <input type="text" id="cleroNome" required>
-                </div>
-                <div class="form-group">
-                    <label for="cleroDataOrdenacao">Data de Ordenação:</label>
-                    <input type="text" id="cleroDataOrdenacao" required>
-                </div>
-                <div class="form-group">
-                    <label for="cleroHistoria">História:</label>
-                    <textarea id="cleroHistoria" rows="6" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="cleroImagem">Imagem:</label>
-                    <input type="file" id="cleroImagem" accept="image/*">
-                    <div id="cleroImagemPreview" class="image-preview"></div>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-secondary" onclick="closeModal('cleroModal')">Cancelar</button>
-                    <button type="submit" class="btn-primary">Salvar</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <form id="cleroForm">
+                    <div class="form-group">
+                        <label for="cleroCargo">Cargo:</label>
+                        <input type="text" id="cleroCargo" required placeholder="Ex: Pároco, Diácono, Padre Auxiliar">
+                    </div>
+                    <div class="form-group">
+                        <label for="cleroNome">Nome Completo:</label>
+                        <input type="text" id="cleroNome" required placeholder="Digite o nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="cleroDataOrdenacao">Data de Ordenação:</label>
+                        <input type="date" id="cleroDataOrdenacao" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cleroHistoria">História/Biografia:</label>
+                        <textarea id="cleroHistoria" rows="6" required placeholder="Digite um breve histórico ou biografia do membro do clero"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="cleroImagem">Foto:</label>
+                        <input type="file" id="cleroImagem" accept="image/*">
+                        <div id="cleroImagemPreview" class="image-preview"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="closeModal('cleroModal')">Cancelar</button>
+                <button type="submit" class="btn-primary" form="cleroForm">Salvar</button>
+            </div>
         </div>
     </div>
 
@@ -575,29 +759,30 @@
             <div class="modal-header">
                 <h3 id="pastoralModalTitle">Nova Pastoral</h3>
                 <span class="close" onclick="closeModal('pastoralModal')">&times;</span>
+            <div class="modal-body">
+                <form id="pastoralForm">
+                    <div class="form-group">
+                        <label for="pastoralNome">Nome da Pastoral:</label>
+                        <input type="text" id="pastoralNome" required placeholder="Ex: Pastoral da Juventude, Pastoral Familiar">
+                    </div>
+                    <div class="form-group">
+                        <label for="pastoralContato">Contato:</label>
+                        <input type="text" id="pastoralContato" required placeholder="Telefone, email ou WhatsApp">
+                    </div>
+                    <div class="form-group">
+                        <label for="pastoralCoordenacao">Coordenação:</label>
+                        <input type="text" id="pastoralCoordenacao" required placeholder="Nome do(a) coordenador(a)">
+                    </div>
+                    <div class="form-group">
+                        <label for="pastoralTexto">Descrição:</label>
+                        <textarea id="pastoralTexto" rows="6" required placeholder="Descreva as atividades e objetivos da pastoral"></textarea>
+                    </div>
+                </form>
             </div>
-            <form id="pastoralForm">
-                <div class="form-group">
-                    <label for="pastoralNome">Nome da Pastoral:</label>
-                    <input type="text" id="pastoralNome" required>
-                </div>
-                <div class="form-group">
-                    <label for="pastoralContato">Contato:</label>
-                    <input type="text" id="pastoralContato" required>
-                </div>
-                <div class="form-group">
-                    <label for="pastoralCoordenacao">Coordenação:</label>
-                    <input type="text" id="pastoralCoordenacao" required>
-                </div>
-                <div class="form-group">
-                    <label for="pastoralTexto">Texto:</label>
-                    <textarea id="pastoralTexto" rows="6" required></textarea>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-secondary" onclick="closeModal('pastoralModal')">Cancelar</button>
-                    <button type="submit" class="btn-primary">Salvar</button>
-                </div>
-            </form>
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="closeModal('pastoralModal')">Cancelar</button>
+                <button type="submit" class="btn-primary" form="pastoralForm">Salvar</button>
+            </div>
         </div>
     </div>
 
@@ -608,34 +793,36 @@
                 <h3 id="horarioModalTitle">Novo Horário de Missa</h3>
                 <span class="close" onclick="closeModal('horarioModal')">&times;</span>
             </div>
-            <form id="horarioForm">
-                <div class="form-group">
-                    <label for="horarioDia">Dia da Semana:</label>
-                    <select id="horarioDia" required>
-                        <option value="">Selecione...</option>
-                        <option value="domingos">Domingos</option>
-                        <option value="sábados">Sábados</option>
-                        <option value="segunda">Segunda-feira</option>
-                        <option value="terca_a_sexta">Terça a Sexta</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="horarioTitulo">Título:</label>
-                    <input type="text" id="horarioTitulo" required>
-                </div>
-                <div class="form-group">
-                    <label for="horarioOrdem">Ordem:</label>
-                    <input type="number" id="horarioOrdem" min="1" required>
-                </div>
-                <div class="form-group">
-                    <label for="horarioMissas">Horários das Missas (um por linha):</label>
-                    <textarea id="horarioMissas" rows="4" required placeholder="Ex:&#10;07:00&#10;19:00"></textarea>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-secondary" onclick="closeModal('horarioModal')">Cancelar</button>
-                    <button type="submit" class="btn-primary">Salvar</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <form id="horarioForm">
+                    <div class="form-group">
+                        <label for="horarioDia">Dia da Semana:</label>
+                        <select id="horarioDia" required>
+                            <option value="">Selecione o dia...</option>
+                            <option value="domingos">Domingos</option>
+                            <option value="sábados">Sábados</option>
+                            <option value="segunda">Segunda-feira</option>
+                            <option value="terca_a_sexta">Terça a Sexta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="horarioTitulo">Título:</label>
+                        <input type="text" id="horarioTitulo" required placeholder="Ex: Missas Dominicais, Missa da Manhã">
+                    </div>
+                    <div class="form-group">
+                        <label for="horarioOrdem">Ordem de Exibição:</label>
+                        <input type="number" id="horarioOrdem" min="1" required placeholder="Número para ordenação (1, 2, 3...)">
+                    </div>
+                    <div class="form-group">
+                        <label for="horarioMissas">Horários das Missas:</label>
+                        <textarea id="horarioMissas" rows="4" required placeholder="Digite um horário por linha:&#10;07:00&#10;19:00&#10;20:30"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="closeModal('horarioModal')">Cancelar</button>
+                <button type="submit" class="btn-primary" form="horarioForm">Salvar</button>
+            </div>
         </div>
     </div>
 
@@ -646,20 +833,22 @@
                 <h3 id="adminModalTitle">Adicionar Administrador</h3>
                 <span class="close" onclick="closeModal('adminModal')">&times;</span>
             </div>
-            <form id="adminForm">
-                <div class="form-group">
-                    <label for="adminEmail">Email:</label>
-                    <input type="email" id="adminEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="adminName">Nome (opcional):</label>
-                    <input type="text" id="adminName">
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-secondary" onclick="closeModal('adminModal')">Cancelar</button>
-                    <button type="submit" class="btn-primary">Adicionar</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <form id="adminForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Email do Administrador:</label>
+                        <input type="email" id="adminEmail" required placeholder="exemplo@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminName">Nome Completo (opcional):</label>
+                        <input type="text" id="adminName" placeholder="Nome do novo administrador">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="closeModal('adminModal')">Cancelar</button>
+                <button type="submit" class="btn-primary" form="adminForm">Adicionar</button>
+            </div>
         </div>
     </div>
     
