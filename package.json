@@ -1,0 +1,21 @@
+{
+  "name": "saolourencoadmin",
+  "version": "1.0.0",
+  "description": "Sistema administrativo da Paróquia São Lourenço",
+  "main": "index.html",
+  "scripts": {
+    "build-css": "tailwindcss -i ./src/css/input.css -o ./src/css/styles.css --watch",
+    "dev": "npm run build-css",
+    "build": "tailwindcss -i ./src/css/input.css -o ./src/css/styles.css --minify"
+  },
+  "keywords": [
+    "paroquia",
+    "administracao",
+    "firebase"
+  ],
+  "author": "Paróquia São Lourenço",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

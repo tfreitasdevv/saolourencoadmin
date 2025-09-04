@@ -24,13 +24,15 @@ class AdminApp {
     showSection(sectionName) {
         // Hide all sections
         document.querySelectorAll('.content-section').forEach(section => {
-            section.classList.remove('active');
+            section.classList.remove('block');
+            section.classList.add('hidden');
         });
 
         // Show selected section
         const targetSection = document.getElementById(`${sectionName}-section`);
         if (targetSection) {
-            targetSection.classList.add('active');
+            targetSection.classList.remove('hidden');
+            targetSection.classList.add('block');
             this.currentSection = sectionName;
             
             // Load data for specific sections
