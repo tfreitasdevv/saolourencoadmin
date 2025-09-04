@@ -47,67 +47,131 @@
         <div id="adminPanel" class="flex flex-col h-screen" style="display: none;">
             <!-- Header -->
             <header class="bg-header-gradient text-white p-4 shadow-lg">
-                <div class="flex flex-col lg:flex-row justify-between items-center gap-2">
-                    <h1 class="text-xl lg:text-2xl font-light flex items-center gap-2">
-                        <i class="fas fa-church text-blue-400"></i> Administração - Paróquia São Lourenço
+                <div class="flex justify-between items-center">
+                    <!-- Menu Toggle Button (Mobile) -->
+                    <button id="mobileMenuToggle" class="mobile-menu-toggle lg:hidden text-white hover:text-blue-300 transition-colors">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    
+                    <!-- Title -->
+                    <h1 class="text-lg lg:text-2xl font-light flex items-center gap-2 flex-1 lg:flex-none justify-center lg:justify-start ml-4 lg:ml-0">
+                        <i class="fas fa-church text-blue-400"></i> 
+                        <span class="hidden sm:inline">Administração - </span>Paróquia São Lourenço
                     </h1>
-                    <div class="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-end">
-                        <span id="userEmail" class="text-gray-200"></span>
-                        <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-3 rounded-lg transition-colors duration-200 flex items-center gap-2">
-                            <i class="fas fa-sign-out-alt"></i> Sair
+                    
+                    <!-- User Actions -->
+                    <div class="flex items-center gap-2 lg:gap-4">
+                        <span id="userEmail" class="text-gray-200 text-sm lg:text-base hidden sm:inline"></span>
+                        <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-2 lg:px-3 rounded-lg transition-colors duration-200 flex items-center gap-1 lg:gap-2">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="hidden lg:inline">Sair</span>
                         </button>
                     </div>
                 </div>
             </header>
             
+            <!-- Mobile Menu Overlay -->
+            <div id="mobileMenuOverlay" class="mobile-menu-overlay lg:hidden"></div>
+            
+            <!-- Mobile Menu -->
+            <nav id="mobileMenu" class="mobile-menu lg:hidden">
+                <div class="mobile-menu-header">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-semibold">Menu de Navegação</h2>
+                        <button id="closeMobileMenu" class="text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="py-2">
+                    <a href="#" data-section="avisos" class="mobile-nav-link">
+                        <i class="fas fa-bullhorn text-blue-500"></i>
+                        <span>Avisos Paroquiais</span>
+                    </a>
+                    <a href="#" data-section="avisos-musica" class="mobile-nav-link">
+                        <i class="fas fa-music text-purple-500"></i>
+                        <span>Avisos Música</span>
+                    </a>
+                    <a href="#" data-section="clero" class="mobile-nav-link">
+                        <i class="fas fa-user-tie text-gray-600"></i>
+                        <span>Clero</span>
+                    </a>
+                    <a href="#" data-section="pastorais" class="mobile-nav-link">
+                        <i class="fas fa-hands-helping text-green-500"></i>
+                        <span>Pastorais</span>
+                    </a>
+                    <a href="#" data-section="horarios" class="mobile-nav-link">
+                        <i class="fas fa-clock text-orange-500"></i>
+                        <span>Horários das Missas</span>
+                    </a>
+                    <a href="#" data-section="capelas" class="mobile-nav-link">
+                        <i class="fas fa-home text-red-500"></i>
+                        <span>Capelas</span>
+                    </a>
+                    <a href="#" data-section="musicas" class="mobile-nav-link">
+                        <i class="fas fa-calendar-alt text-indigo-500"></i>
+                        <span>Músicas do Mês</span>
+                    </a>
+                    <a href="#" data-section="usuarios" class="mobile-nav-link">
+                        <i class="fas fa-users text-teal-500"></i>
+                        <span>Usuários</span>
+                    </a>
+                    <a href="#" data-section="administradores" class="mobile-nav-link">
+                        <i class="fas fa-user-shield text-yellow-600"></i>
+                        <span>Administradores</span>
+                    </a>
+                </div>
+            </nav>
+            
             <!-- Admin Content Container -->
             <div class="flex flex-1 overflow-hidden">
-                <!-- Navigation -->
-                <nav class="w-full lg:w-64 bg-white border-r lg:border-r border-b lg:border-b-0 border-gray-200 overflow-y-auto">
-                    <ul class="list-none p-0 flex lg:block overflow-x-auto lg:overflow-x-visible">
-                        <li><a href="#" data-section="avisos" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-bullhorn"></i> Avisos Paroquiais
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav w-64 bg-white border-r border-gray-200 overflow-y-auto">
+                    <ul class="list-none p-0">
+                        <li><a href="#" data-section="avisos" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-bullhorn text-blue-500"></i> Avisos Paroquiais
                         </a></li>
-                        <li><a href="#" data-section="avisos-musica" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-music"></i> Avisos Música
+                        <li><a href="#" data-section="avisos-musica" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-music text-purple-500"></i> Avisos Música
                         </a></li>
-                        <li><a href="#" data-section="clero" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-user-tie"></i> Clero
+                        <li><a href="#" data-section="clero" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-user-tie text-gray-600"></i> Clero
                         </a></li>
-                        <li><a href="#" data-section="pastorais" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-hands-helping"></i> Pastorais
+                        <li><a href="#" data-section="pastorais" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-hands-helping text-green-500"></i> Pastorais
                         </a></li>
-                        <li><a href="#" data-section="horarios" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-clock"></i> Horários das Missas
+                        <li><a href="#" data-section="horarios" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-clock text-orange-500"></i> Horários das Missas
                         </a></li>
-                        <li><a href="#" data-section="capelas" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-home"></i> Capelas
+                        <li><a href="#" data-section="capelas" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-home text-red-500"></i> Capelas
                         </a></li>
-                        <li><a href="#" data-section="musicas" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-calendar-alt"></i> Músicas do Mês
+                        <li><a href="#" data-section="musicas" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-calendar-alt text-indigo-500"></i> Músicas do Mês
                         </a></li>
-                        <li><a href="#" data-section="usuarios" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-users"></i> Usuários
+                        <li><a href="#" data-section="usuarios" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-users text-teal-500"></i> Usuários
                         </a></li>
-                        <li><a href="#" data-section="administradores" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 lg:border-l-4 border-b-4 lg:border-b-0 border-transparent whitespace-nowrap lg:whitespace-normal">
-                            <i class="fas fa-user-shield"></i> Administradores
+                        <li><a href="#" data-section="administradores" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-user-shield text-yellow-600"></i> Administradores
                         </a></li>
                     </ul>
                 </nav>
 
             <!-- Main Content -->
-            <main class="flex-1 p-6 overflow-y-auto bg-gray-50">
+            <main class="flex-1 p-3 lg:p-6 overflow-y-auto bg-gray-50">
                 <div id="loading" class="flex items-center justify-center gap-2 text-parish-blue-500 font-medium" style="display: none;">
                     <i class="fas fa-spinner fa-spin"></i> Carregando...
                 </div>
 
                 <!-- Avisos Paroquiais Section -->
                 <section id="avisos-section" class="content-section block">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-gray-200 gap-4">
-                        <h2 class="text-2xl font-semibold text-gray-800 flex items-center gap-2">
-                            <i class="fas fa-bullhorn"></i> Avisos Paroquiais
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 lg:mb-6 pb-4 border-b border-gray-200 gap-4">
+                        <h2 class="text-xl lg:text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-bullhorn text-blue-500"></i> Avisos Paroquiais
                         </h2>
-                        <button class="bg-parish-blue-500 hover:bg-parish-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center gap-2" onclick="openAvisoModal()">
+                        <button class="w-full sm:w-auto bg-parish-blue-500 hover:bg-parish-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2" onclick="openAvisoModal()">
                             <i class="fas fa-plus"></i> Novo Aviso
                         </button>
                     </div>
@@ -115,11 +179,11 @@
                         <table id="avisosTable" class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Título</th>
-                                    <th>Descrição</th>
-                                    <th>Data</th>
-                                    <th>Prioridade</th>
-                                    <th>Imagem</th>
+                                    <th class="hidden sm:table-cell">Título</th>
+                                    <th class="hidden lg:table-cell">Descrição</th>
+                                    <th class="hidden md:table-cell">Data</th>
+                                    <th class="hidden lg:table-cell">Prioridade</th>
+                                    <th class="hidden lg:table-cell">Imagem</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -130,9 +194,9 @@
 
                 <!-- Avisos Música Section -->
                 <section id="avisos-musica-section" class="content-section">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-gray-200 gap-4">
-                        <h2 class="text-2xl font-semibold text-gray-800 flex items-center gap-2">
-                            <i class="fas fa-music"></i> Avisos Música
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 lg:mb-6 pb-4 border-b border-gray-200 gap-4">
+                        <h2 class="text-xl lg:text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-music text-purple-500"></i> Avisos Música
                         </h2>
                         <button class="bg-parish-blue-500 hover:bg-parish-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center gap-2" onclick="openAvisoMusicaModal()">
                             <i class="fas fa-plus"></i> Novo Aviso

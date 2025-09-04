@@ -3,22 +3,99 @@ class AdminApp {
     constructor() {
         this.currentSection = 'avisos';
         this.currentEditingId = null;
+        this.mobileMenuOpen = false;
         this.initEventListeners();
+        this.initMobileMenu();
     }
 
     initEventListeners() {
-        // Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
+        // Navigation (both desktop and mobile)
+        document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = link.dataset.section;
                 this.showSection(section);
                 this.setActiveNavLink(link);
+                
+                // Close mobile menu when selecting an item
+                if (link.classList.contains('mobile-nav-link')) {
+                    this.closeMobileMenu();
+                }
             });
         });
 
         // Form submissions
         this.initFormHandlers();
+    }
+
+    initMobileMenu() {
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        // Open mobile menu
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', () => {
+                this.openMobileMenu();
+            });
+        }
+
+        // Close mobile menu
+        if (closeMobileMenu) {
+            closeMobileMenu.addEventListener('click', () => {
+                this.closeMobileMenu();
+            });
+        }
+
+        // Close menu when clicking overlay
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', () => {
+                this.closeMobileMenu();
+            });
+        }
+
+        // Close menu on window resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && this.mobileMenuOpen) {
+                this.closeMobileMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.mobileMenuOpen) {
+                this.closeMobileMenu();
+            }
+        });
+    }
+
+    openMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        
+        if (mobileMenu && mobileMenuOverlay) {
+            mobileMenu.classList.add('open');
+            mobileMenuOverlay.classList.add('active');
+            this.mobileMenuOpen = true;
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        
+        if (mobileMenu && mobileMenuOverlay) {
+            mobileMenu.classList.remove('open');
+            mobileMenuOverlay.classList.remove('active');
+            this.mobileMenuOpen = false;
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+        }
     }
 
     showSection(sectionName) {
@@ -43,10 +120,19 @@ class AdminApp {
     }
 
     setActiveNavLink(activeLink) {
-        document.querySelectorAll('.nav-link').forEach(link => {
+        // Remove active class from all nav links
+        document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
             link.classList.remove('active');
         });
+        
+        // Add active class to clicked link
         activeLink.classList.add('active');
+        
+        // Also activate corresponding link in other menu (desktop/mobile)
+        const section = activeLink.dataset.section;
+        document.querySelectorAll(`[data-section="${section}"]`).forEach(link => {
+            link.classList.add('active');
+        });
     }
 
     initFormHandlers() {
