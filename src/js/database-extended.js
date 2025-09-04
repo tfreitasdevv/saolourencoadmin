@@ -356,12 +356,14 @@ window.viewUsuario = async function(id) {
 
 // Administradores functions
 window.openAdminModal = function() {
-    document.getElementById('adminModal').style.display = 'flex';
+    const modal = document.getElementById('adminModal');
+    modal.classList.remove('hidden');
     document.getElementById('adminForm').reset();
 };
 
 window.closeAdminModal = function() {
-    document.getElementById('adminModal').style.display = 'none';
+    const modal = document.getElementById('adminModal');
+    modal.classList.add('hidden');
 };
 
 window.loadAdministradores = async function() {

@@ -324,11 +324,13 @@ class AdminApp {
     }
 
     closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
+        const modal = document.getElementById(modalId);
+        modal.classList.add('hidden');
     }
 
     openModal(modalId) {
-        document.getElementById(modalId).style.display = 'block';
+        const modal = document.getElementById(modalId);
+        modal.classList.remove('hidden');
     }
 }
 
@@ -359,7 +361,7 @@ window.openAvisoModal = function(data = null, id = null) {
         app.resetAvisoForm();
     }
     
-    modal.style.display = 'block';
+    modal.classList.remove('hidden');
 };
 
 window.openAvisoMusicaModal = function(data = null, id = null) {
@@ -377,7 +379,7 @@ window.openAvisoMusicaModal = function(data = null, id = null) {
         app.resetAvisoMusicaForm();
     }
     
-    modal.style.display = 'block';
+    modal.classList.remove('hidden');
 };
 
 window.openCleroModal = function(data = null, id = null) {
@@ -401,7 +403,7 @@ window.openCleroModal = function(data = null, id = null) {
         app.resetCleroForm();
     }
     
-    modal.style.display = 'block';
+    modal.classList.remove('hidden');
 };
 
 window.openPastoralModal = function(data = null, id = null) {
@@ -420,7 +422,7 @@ window.openPastoralModal = function(data = null, id = null) {
         app.resetPastoralForm();
     }
     
-    modal.style.display = 'block';
+    modal.classList.remove('hidden');
 };
 
 window.openHorarioModal = function(data = null, id = null) {
@@ -439,7 +441,7 @@ window.openHorarioModal = function(data = null, id = null) {
         app.resetHorarioForm();
     }
     
-    modal.style.display = 'block';
+    modal.classList.remove('hidden');
 };
 
 window.openCapelaModal = function(data = null, id = null) {
@@ -459,7 +461,7 @@ window.addEventListener('click', function(event) {
     const modals = document.querySelectorAll('.modal');
     modals.forEach(modal => {
         if (event.target === modal) {
-            modal.style.display = 'none';
+            modal.classList.add('hidden');
         }
     });
 });
