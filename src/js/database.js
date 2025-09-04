@@ -147,7 +147,7 @@ class DatabaseManager {
             <div class="card-body">
                 <div class="card-field">
                     <span class="card-label">Descrição:</span>
-                    <span class="card-value">${data.descricao ? (data.descricao.length > 100 ? data.descricao.substring(0, 100) + '...' : data.descricao) : 'Sem descrição'}</span>
+                    <span class="card-value">${data.descricao ? (data.descricao.replace(/\\n/g, ' ').length > 100 ? data.descricao.replace(/\\n/g, ' ').substring(0, 100) + '...' : data.descricao.replace(/\\n/g, ' ')) : 'Sem descrição'}</span>
                 </div>
                 <div class="card-field">
                     <span class="card-label">Data:</span>
@@ -274,7 +274,7 @@ class DatabaseManager {
             <div class="card-body">
                 <div class="card-field">
                     <span class="card-label">Descrição:</span>
-                    <span class="card-value">${data.descricao ? (data.descricao.length > 100 ? data.descricao.substring(0, 100) + '...' : data.descricao) : 'Sem descrição'}</span>
+                    <span class="card-value">${data.descricao ? (data.descricao.replace(/\\n/g, ' ').length > 100 ? data.descricao.replace(/\\n/g, ' ').substring(0, 100) + '...' : data.descricao.replace(/\\n/g, ' ')) : 'Sem descrição'}</span>
                 </div>
                 <div class="card-field">
                     <span class="card-label">Data:</span>

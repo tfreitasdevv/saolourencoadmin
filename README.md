@@ -50,6 +50,14 @@ saolourencoadmin/
 - Font Awesome (ícones)
 - GitHub Actions (deploy automático)
 
+## 🆕 Melhorias Recentes
+
+### ✨ Sistema de Quebras de Linha Intuitivo
+- **Nova funcionalidade**: Campos de descrição dos avisos agora aceitam Enter naturalmente
+- **Benefício**: Usuários não precisam mais digitar `\n` manualmente
+- **Compatibilidade**: Mantém funcionamento com o aplicativo Flutter
+- **Documentação**: [`docs/MELHORIA-QUEBRAS-LINHA.md`](./docs/MELHORIA-QUEBRAS-LINHA.md)
+
 ## 🛡️ Segurança
 
 - ✅ Credenciais protegidas com GitHub Secrets

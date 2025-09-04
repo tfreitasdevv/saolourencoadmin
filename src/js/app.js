@@ -1,3 +1,19 @@
+// Funções utilitárias para conversão de quebras de linha
+function convertLineBreaksToFlutter(text) {
+    // Converte quebras de linha naturais (\n) em string literal "\n" para o Flutter
+    return text.replace(/\n/g, '\\n');
+}
+
+function convertLineBreaksFromFlutter(text) {
+    // Converte string literal "\n" de volta em quebras de linha naturais
+    return text.replace(/\\n/g, '\n');
+}
+
+function convertLineBreaksToHTML(text) {
+    // Converte string literal "\n" em quebras de linha HTML para exibição
+    return text.replace(/\\n/g, '<br>');
+}
+
 // Main application logic
 class AdminApp {
     constructor() {
@@ -183,7 +199,7 @@ class AdminApp {
         try {
             // Get form values
             const titulo = document.getElementById('avisoTitulo').value;
-            const descricao = document.getElementById('avisoDescricao').value;
+            const descricao = convertLineBreaksToFlutter(document.getElementById('avisoDescricao').value);
             const prioridade = parseInt(document.getElementById('avisoPrioridade').value);
             const imagemFile = document.getElementById('avisoImagem').files[0];
 
@@ -232,7 +248,7 @@ class AdminApp {
     async handleAvisoMusicaSubmit() {
         try {
             const titulo = document.getElementById('avisoMusicaTitulo').value;
-            const descricao = document.getElementById('avisoMusicaDescricao').value;
+            const descricao = convertLineBreaksToFlutter(document.getElementById('avisoMusicaDescricao').value);
             const prioridade = parseInt(document.getElementById('avisoMusicaPrioridade').value);
 
             const avisoData = {
@@ -432,7 +448,7 @@ window.openAvisoModal = function(data = null, id = null) {
         // Edit mode
         title.textContent = 'Editar Aviso Paroquial';
         document.getElementById('avisoTitulo').value = data.titulo || '';
-        document.getElementById('avisoDescricao').value = data.descricao || '';
+        document.getElementById('avisoDescricao').value = convertLineBreaksFromFlutter(data.descricao || '');
         document.getElementById('avisoPrioridade').value = data.prioridade || '';
         app.currentEditingId = id;
         
@@ -457,7 +473,7 @@ window.openAvisoMusicaModal = function(data = null, id = null) {
     if (data && id) {
         title.textContent = 'Editar Aviso Música';
         document.getElementById('avisoMusicaTitulo').value = data.titulo || '';
-        document.getElementById('avisoMusicaDescricao').value = data.descricao || '';
+        document.getElementById('avisoMusicaDescricao').value = convertLineBreaksFromFlutter(data.descricao || '');
         document.getElementById('avisoMusicaPrioridade').value = data.prioridade || '';
         app.currentEditingId = id;
     } else {
