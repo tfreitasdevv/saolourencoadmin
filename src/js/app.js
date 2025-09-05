@@ -215,7 +215,7 @@ class AdminApp {
                 if (uploadResult.success) {
                     imagemUrl = uploadResult.url;
                 } else {
-                    alert('Erro ao fazer upload da imagem');
+                    showError('Erro ao fazer upload da imagem');
                     return;
                 }
             }
@@ -233,15 +233,15 @@ class AdminApp {
             const result = await window.dbManager.saveAviso(avisoData, this.currentEditingId);
             
             if (result.success) {
-                alert(this.currentEditingId ? 'Aviso atualizado com sucesso!' : 'Aviso criado com sucesso!');
+                showSuccess(this.currentEditingId ? 'Aviso atualizado com sucesso!' : 'Aviso criado com sucesso!');
                 this.closeModal('avisoModal');
                 this.resetAvisoForm();
             } else {
-                alert('Erro ao salvar aviso: ' + result.error);
+                showError('Erro ao salvar aviso: ' + result.error);
             }
         } catch (error) {
             console.error('Erro no submit do aviso:', error);
-            alert('Erro ao salvar aviso');
+            showError('Erro ao salvar aviso');
         }
     }
 
@@ -261,15 +261,15 @@ class AdminApp {
             const result = await window.dbManager.saveAvisoMusica(avisoData, this.currentEditingId);
             
             if (result.success) {
-                alert(this.currentEditingId ? 'Aviso música atualizado com sucesso!' : 'Aviso música criado com sucesso!');
+                showSuccess(this.currentEditingId ? 'Aviso música atualizado com sucesso!' : 'Aviso música criado com sucesso!');
                 this.closeModal('avisoMusicaModal');
                 this.resetAvisoMusicaForm();
             } else {
-                alert('Erro ao salvar aviso música: ' + result.error);
+                showError('Erro ao salvar aviso música: ' + result.error);
             }
         } catch (error) {
             console.error('Erro no submit do aviso música:', error);
-            alert('Erro ao salvar aviso música');
+            showError('Erro ao salvar aviso música');
         }
     }
 
@@ -292,7 +292,7 @@ class AdminApp {
                 if (uploadResult.success) {
                     imagemUrl = uploadResult.url;
                 } else {
-                    alert('Erro ao fazer upload da imagem');
+                    showError('Erro ao fazer upload da imagem');
                     return;
                 }
             }
@@ -310,15 +310,15 @@ class AdminApp {
             const result = await window.dbManager.saveClero(cleroData, cargo);
             
             if (result.success) {
-                alert('Membro do clero salvo com sucesso!');
+                showSuccess('Membro do clero salvo com sucesso!');
                 this.closeModal('cleroModal');
                 this.resetCleroForm();
             } else {
-                alert('Erro ao salvar membro do clero: ' + result.error);
+                showError('Erro ao salvar membro do clero: ' + result.error);
             }
         } catch (error) {
             console.error('Erro no submit do clero:', error);
-            alert('Erro ao salvar membro do clero');
+            showError('Erro ao salvar membro do clero');
         }
     }
 
@@ -338,15 +338,15 @@ class AdminApp {
             const result = await window.dbManager.savePastoral(pastoralData, nome);
             
             if (result.success) {
-                alert('Pastoral salva com sucesso!');
+                showSuccess('Pastoral salva com sucesso!');
                 this.closeModal('pastoralModal');
                 this.resetPastoralForm();
             } else {
-                alert('Erro ao salvar pastoral: ' + result.error);
+                showError('Erro ao salvar pastoral: ' + result.error);
             }
         } catch (error) {
             console.error('Erro no submit da pastoral:', error);
-            alert('Erro ao salvar pastoral');
+            showError('Erro ao salvar pastoral');
         }
     }
 
@@ -368,15 +368,15 @@ class AdminApp {
             const result = await window.dbManager.saveHorario(horarioData, dia);
             
             if (result.success) {
-                alert('Horário salvo com sucesso!');
+                showSuccess('Horário salvo com sucesso!');
                 this.closeModal('horarioModal');
                 this.resetHorarioForm();
             } else {
-                alert('Erro ao salvar horário: ' + result.error);
+                showError('Erro ao salvar horário: ' + result.error);
             }
         } catch (error) {
             console.error('Erro no submit do horário:', error);
-            alert('Erro ao salvar horário');
+            showError('Erro ao salvar horário');
         }
     }
 
@@ -547,11 +547,11 @@ window.openHorarioModal = function(data = null, id = null) {
 };
 
 window.openCapelaModal = function(data = null, id = null) {
-    alert('Modal de Capelas será implementado em breve');
+    showInfo('Modal de Capelas será implementado em breve');
 };
 
 window.openMusicaModal = function(data = null, id = null) {
-    alert('Modal de Músicas será implementado em breve');
+    showInfo('Modal de Músicas será implementado em breve');
 };
 
 window.closeModal = function(modalId) {
@@ -581,6 +581,174 @@ window.formatFirebaseDate = function(timestamp) {
     if (!timestamp) return '';
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     return date.toLocaleDateString('pt-BR');
+};
+
+// ====================================
+// SISTEMA DE NOTIFICAÇÕES TOAST
+// ====================================
+
+class ToastManager {
+    constructor() {
+        this.container = document.getElementById('toast-container');
+        this.toasts = new Map();
+        this.toastId = 0;
+    }
+
+    // Criar um toast
+    show(message, type = 'info', options = {}) {
+        const id = ++this.toastId;
+        const toast = this.createToast(id, message, type, options);
+        
+        this.container.appendChild(toast);
+        this.toasts.set(id, toast);
+        
+        // Mostrar o toast com animação
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+        
+        // Auto-hide após duração especificada
+        const duration = options.duration || this.getDefaultDuration(type);
+        if (duration > 0) {
+            setTimeout(() => {
+                this.hide(id);
+            }, duration);
+        }
+        
+        return id;
+    }
+
+    // Criar elemento do toast
+    createToast(id, message, type, options) {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.setAttribute('data-toast-id', id);
+        
+        const icon = this.getIcon(type);
+        const title = options.title || this.getDefaultTitle(type);
+        
+        toast.innerHTML = `
+            <div class="toast-icon">${icon}</div>
+            <div class="toast-content">
+                <div class="toast-title">${title}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+            <button class="toast-close" onclick="toastManager.hide(${id})">&times;</button>
+            ${options.showProgress !== false ? '<div class="toast-progress"></div>' : ''}
+        `;
+        
+        // Adicionar barra de progresso se necessário
+        if (options.showProgress !== false) {
+            const duration = options.duration || this.getDefaultDuration(type);
+            if (duration > 0) {
+                const progress = toast.querySelector('.toast-progress');
+                progress.style.width = '100%';
+                progress.style.transition = `width ${duration}ms linear`;
+                setTimeout(() => {
+                    progress.style.width = '0%';
+                }, 50);
+            }
+        }
+        
+        return toast;
+    }
+
+    // Esconder toast
+    hide(id) {
+        const toast = this.toasts.get(id);
+        if (toast) {
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+                this.toasts.delete(id);
+            }, 300);
+        }
+    }
+
+    // Limpar todos os toasts
+    clear() {
+        this.toasts.forEach((toast, id) => {
+            this.hide(id);
+        });
+    }
+
+    // Obter ícone baseado no tipo
+    getIcon(type) {
+        const icons = {
+            success: '✓',
+            error: '✕',
+            warning: '⚠',
+            info: 'ℹ'
+        };
+        return icons[type] || icons.info;
+    }
+
+    // Obter título padrão baseado no tipo
+    getDefaultTitle(type) {
+        const titles = {
+            success: 'Sucesso',
+            error: 'Erro',
+            warning: 'Atenção',
+            info: 'Informação'
+        };
+        return titles[type] || titles.info;
+    }
+
+    // Obter duração padrão baseada no tipo
+    getDefaultDuration(type) {
+        const durations = {
+            success: 4000,
+            error: 6000,
+            warning: 5000,
+            info: 4000
+        };
+        return durations[type] || durations.info;
+    }
+
+    // Métodos de conveniência
+    success(message, options = {}) {
+        return this.show(message, 'success', options);
+    }
+
+    error(message, options = {}) {
+        return this.show(message, 'error', options);
+    }
+
+    warning(message, options = {}) {
+        return this.show(message, 'warning', options);
+    }
+
+    info(message, options = {}) {
+        return this.show(message, 'info', options);
+    }
+}
+
+// Instância global do gerenciador de toasts
+window.toastManager = new ToastManager();
+
+// Funções de conveniência globais
+window.showToast = function(message, type = 'info', options = {}) {
+    return toastManager.show(message, type, options);
+};
+
+window.showSuccess = function(message, options = {}) {
+    return toastManager.success(message, options);
+};
+
+window.showError = function(message, options = {}) {
+    return toastManager.error(message, options);
+};
+
+window.showWarning = function(message, options = {}) {
+    return toastManager.warning(message, options);
+};
+
+window.showInfo = function(message, options = {}) {
+    return toastManager.info(message, options);
 };
 
 // Initialize tooltips and other UI enhancements

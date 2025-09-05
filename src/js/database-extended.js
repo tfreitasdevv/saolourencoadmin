@@ -29,10 +29,10 @@ class ExtendedDatabaseManager extends DatabaseManager {
             this.showLoading();
             await db.collection(this.collections.avisosMsuica).doc(id).delete();
             await this.loadAvisosMsuica();
-            alert('Aviso excluído com sucesso!');
+            showSuccess('Aviso excluído com sucesso!');
         } catch (error) {
             console.error('Erro ao excluir aviso música:', error);
-            alert('Erro ao excluir aviso música');
+            showError('Erro ao excluir aviso música');
         } finally {
             this.hideLoading();
         }
@@ -60,10 +60,10 @@ class ExtendedDatabaseManager extends DatabaseManager {
             this.showLoading();
             await db.collection(this.collections.clero).doc(cargo).delete();
             await this.loadClero();
-            alert('Membro do clero excluído com sucesso!');
+            showSuccess('Membro do clero excluído com sucesso!');
         } catch (error) {
             console.error('Erro ao excluir membro do clero:', error);
-            alert('Erro ao excluir membro do clero');
+            showError('Erro ao excluir membro do clero');
         } finally {
             this.hideLoading();
         }
@@ -91,10 +91,10 @@ class ExtendedDatabaseManager extends DatabaseManager {
             this.showLoading();
             await db.collection(this.collections.pastorais).doc(nome).delete();
             await this.loadPastorais();
-            alert('Pastoral excluída com sucesso!');
+            showSuccess('Pastoral excluída com sucesso!');
         } catch (error) {
             console.error('Erro ao excluir pastoral:', error);
-            alert('Erro ao excluir pastoral');
+            showError('Erro ao excluir pastoral');
         } finally {
             this.hideLoading();
         }
@@ -183,10 +183,10 @@ class ExtendedDatabaseManager extends DatabaseManager {
             this.showLoading();
             await db.collection(this.collections.horarios).doc(dia).delete();
             await this.loadHorarios();
-            alert('Horário excluído com sucesso!');
+            showSuccess('Horário excluído com sucesso!');
         } catch (error) {
             console.error('Erro ao excluir horário:', error);
-            alert('Erro ao excluir horário');
+            showError('Erro ao excluir horário');
         } finally {
             this.hideLoading();
         }
@@ -271,10 +271,10 @@ class ExtendedDatabaseManager extends DatabaseManager {
             this.showLoading();
             await db.collection(this.collections.capelas).doc(nome).delete();
             await this.loadCapelas();
-            alert('Capela excluída com sucesso!');
+            showSuccess('Capela excluída com sucesso!');
         } catch (error) {
             console.error('Erro ao excluir capela:', error);
-            alert('Erro ao excluir capela');
+            showError('Erro ao excluir capela');
         } finally {
             this.hideLoading();
         }
@@ -353,7 +353,7 @@ window.editAvisoMusica = async function(id) {
     if (result.success) {
         openAvisoMusicaModal(result.data, id);
     } else {
-        alert('Erro ao carregar aviso música');
+        showError('Erro ao carregar aviso música');
     }
 };
 
@@ -366,7 +366,7 @@ window.editClero = async function(id) {
     if (result.success) {
         openCleroModal(result.data, id);
     } else {
-        alert('Erro ao carregar membro do clero');
+        showError('Erro ao carregar membro do clero');
     }
 };
 
@@ -379,7 +379,7 @@ window.editPastoral = async function(id) {
     if (result.success) {
         openPastoralModal(result.data, id);
     } else {
-        alert('Erro ao carregar pastoral');
+        showError('Erro ao carregar pastoral');
     }
 };
 
@@ -392,7 +392,7 @@ window.editHorario = async function(id) {
     if (result.success) {
         openHorarioModal(result.data, id);
     } else {
-        alert('Erro ao carregar horário');
+        showError('Erro ao carregar horário');
     }
 };
 
@@ -405,7 +405,7 @@ window.editCapela = async function(id) {
     if (result.success) {
         openCapelaModal(result.data, id);
     } else {
-        alert('Erro ao carregar capela');
+        showError('Erro ao carregar capela');
     }
 };
 
@@ -416,9 +416,9 @@ window.deleteCapela = function(id) {
 window.viewUsuario = async function(id) {
     const result = await window.dbManager.getDocument('usuarios', id);
     if (result.success) {
-        alert(`Usuário: ${JSON.stringify(result.data, null, 2)}`);
+        showInfo(`Usuário: ${JSON.stringify(result.data, null, 2)}`);
     } else {
-        alert('Erro ao carregar usuário');
+        showError('Erro ao carregar usuário');
     }
 };
 
@@ -482,23 +482,23 @@ window.loadAdministradores = async function() {
         }
     } catch (error) {
         console.error('Erro ao carregar administradores:', error);
-        alert('Erro ao carregar lista de administradores');
+        showError('Erro ao carregar lista de administradores');
     }
 };
 
 window.removeAdministrador = async function(email) {
     if (email === authManager.currentUser.email) {
-        alert('Você não pode remover seu próprio acesso de administrador.');
+        showWarning('Você não pode remover seu próprio acesso de administrador.');
         return;
     }
     
     if (confirm(`Deseja realmente remover o acesso de administrador para ${email}?`)) {
         const result = await authManager.removeAuthorizedUser(email);
         if (result.success) {
-            alert('Administrador removido com sucesso!');
+            showSuccess('Administrador removido com sucesso!');
             loadAdministradores();
         } else {
-            alert(`Erro ao remover administrador: ${result.error}`);
+            showError(`Erro ao remover administrador: ${result.error}`);
         }
     }
 };
@@ -513,10 +513,10 @@ document.getElementById('adminForm').addEventListener('submit', async (e) => {
     const result = await authManager.addAuthorizedUser(email, name);
     
     if (result.success) {
-        alert('Administrador adicionado com sucesso!');
+        showSuccess('Administrador adicionado com sucesso!');
         closeAdminModal();
         loadAdministradores();
     } else {
-        alert(`Erro ao adicionar administrador: ${result.error}`);
+        showError(`Erro ao adicionar administrador: ${result.error}`);
     }
 });

@@ -28,7 +28,7 @@ const missingConfigs = requiredConfigs.filter(key => !firebaseConfig[key] || fir
 if (missingConfigs.length > 0) {
     console.error('❌ Firebase: Configurações ausentes:', missingConfigs);
     console.error('📝 Configure o arquivo .env com suas credenciais do Firebase');
-    alert('Erro: Configure as credenciais do Firebase. Veja o console para detalhes.');
+    showError('Erro: Configure as credenciais do Firebase. Veja o console para detalhes.');
 }
 
 // Initialize Firebase

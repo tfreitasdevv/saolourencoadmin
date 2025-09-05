@@ -184,6 +184,6 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
 document.getElementById('logoutBtn').addEventListener('click', async () => {
     const result = await authManager.logout();
     if (!result.success) {
-        alert(`Erro ao sair: ${result.error}`);
+        showError(`Erro ao sair: ${result.error}`);
     }
 });

@@ -110,7 +110,7 @@ class DatabaseManager {
         } catch (error) {
             console.error('❌ [DEBUG] Erro ao carregar avisos:', error);
             console.error('❌ [DEBUG] Stack trace:', error.stack);
-            alert('Erro ao carregar avisos: ' + error.message);
+            showError('Erro ao carregar avisos: ' + error.message);
         } finally {
             this.hideLoading();
         }
@@ -195,10 +195,10 @@ class DatabaseManager {
             this.showLoading();
             await db.collection(this.collections.avisos).doc(id).delete();
             await this.loadAvisos();
-            alert('Aviso excluído com sucesso!');
+            showSuccess('Aviso excluído com sucesso!');
         } catch (error) {
             console.error('Erro ao excluir aviso:', error);
-            alert('Erro ao excluir aviso');
+            showError('Erro ao excluir aviso');
         } finally {
             this.hideLoading();
         }
@@ -243,7 +243,7 @@ class DatabaseManager {
         } catch (error) {
             console.error('❌ [DEBUG] Erro ao carregar avisos música:', error);
             console.error('❌ [DEBUG] Stack trace:', error.stack);
-            alert('Erro ao carregar avisos música: ' + error.message);
+            showError('Erro ao carregar avisos música: ' + error.message);
         }
     }
 
@@ -510,7 +510,7 @@ window.editAviso = async function(id) {
     if (result.success) {
         openAvisoModal(result.data, id);
     } else {
-        alert('Erro ao carregar aviso');
+        showError('Erro ao carregar aviso');
     }
 };
 
