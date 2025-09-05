@@ -59,6 +59,13 @@ saolourencoadmin/
 - **Compatibilidade**: Mantém funcionamento com o aplicativo Flutter
 - **Documentação**: [`docs/MELHORIA-QUEBRAS-LINHA.md`](./docs/MELHORIA-QUEBRAS-LINHA.md)
 
+### 🎨 Contraste Aprimorado nos Formulários
+- **Problema resolvido**: Baixo contraste entre texto e fundo nos campos de entrada
+- **Benefício**: Melhor legibilidade e acessibilidade para todos os usuários
+- **Aplicação**: Todos os modais de formulário (Pastorais, Avisos, Clero, etc.)
+- **Técnica**: CSS com `!important` para sobrescrever conflitos do Tailwind
+- **Documentação**: [`docs/MELHORIA-CONTRASTE-FORMULARIOS.md`](./docs/MELHORIA-CONTRASTE-FORMULARIOS.md)
+
 ## 🛡️ Segurança
 
 - ✅ Credenciais protegidas com GitHub Secrets

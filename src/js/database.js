@@ -400,7 +400,7 @@ class DatabaseManager {
             <div class="card-body">
                 <div class="card-field">
                     <span class="card-label">Contato:</span>
-                    <span class="card-value">${data.contato || 'Não informado'}</span>
+                    <span class="card-value">${data.contato ? data.contato.replace(/\\n/g, ' • ') : 'Não informado'}</span>
                 </div>
                 <div class="card-field">
                     <span class="card-label">Coordenação:</span>

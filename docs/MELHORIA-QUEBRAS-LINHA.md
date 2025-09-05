@@ -46,8 +46,11 @@ function convertLineBreaksToHTML(text) {
 
 #### Pastorais:
 - **Campo descrição**: Agora o usuário pode usar Enter normalmente
+- **Campo contato**: Agora o usuário pode usar Enter normalmente para múltiplos contatos
 - **Placeholder atualizado**: "Descreva as atividades e objetivos da pastoral. Use Enter para quebras de linha."
+- **Placeholder contato**: "Digite os contatos da pastoral (telefone, email, WhatsApp). Use Enter para quebras de linha."
 - **Dica visual**: "💡 Dica: Pressione Enter para quebrar linha. Não é necessário digitar \n manualmente."
+- **Dica contato**: "💡 Dica: Pressione Enter para quebrar linha. Adicione múltiplos contatos em linhas separadas."
 
 ### 3. **Fluxo de Dados Atualizado**
 
@@ -146,4 +149,4 @@ O sistema automaticamente converte entre os formatos conforme necessário, mante
 - ✅ **Avisos Paroquiais**: Campo "descrição"
 - ✅ **Avisos Musicais**: Campo "descrição" 
 - ✅ **Clero**: Campo "história/biografia"
-- ✅ **Pastorais**: Campo "descrição"
+- ✅ **Pastorais**: Campo "descrição" e campo "contato"

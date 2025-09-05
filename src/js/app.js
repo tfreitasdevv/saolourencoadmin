@@ -325,7 +325,7 @@ class AdminApp {
     async handlePastoralSubmit() {
         try {
             const nome = document.getElementById('pastoralNome').value;
-            const contato = document.getElementById('pastoralContato').value;
+            const contato = convertLineBreaksToFlutter(document.getElementById('pastoralContato').value);
             const coordenacao = document.getElementById('pastoralCoordenacao').value;
             const texto = convertLineBreaksToFlutter(document.getElementById('pastoralTexto').value);
 
@@ -515,7 +515,7 @@ window.openPastoralModal = function(data = null, id = null) {
     if (data && id) {
         title.textContent = 'Editar Pastoral';
         document.getElementById('pastoralNome').value = id;
-        document.getElementById('pastoralContato').value = data.contato || '';
+        document.getElementById('pastoralContato').value = convertLineBreaksFromFlutter(data.contato || '');
         document.getElementById('pastoralCoordenacao').value = data.coordenacao || '';
         document.getElementById('pastoralTexto').value = convertLineBreaksFromFlutter(data.texto || '');
         app.currentEditingId = id;

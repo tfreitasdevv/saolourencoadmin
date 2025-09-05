@@ -375,7 +375,6 @@
                     <div class="form-group">
                         <label for="avisoDescricao">Descrição:</label>
                         <textarea id="avisoDescricao" rows="4" required placeholder="Digite a descrição completa do aviso. Use Enter para quebras de linha."></textarea>
-                        <small class="text-gray-500 text-sm mt-1 block">💡 Dica: Pressione Enter para quebrar linha. Não é necessário digitar \n manualmente.</small>
                     </div>
                     <div class="form-group">
                         <label for="avisoPrioridade">Prioridade:</label>
@@ -411,7 +410,6 @@
                     <div class="form-group">
                         <label for="avisoMusicaDescricao">Descrição:</label>
                         <textarea id="avisoMusicaDescricao" rows="4" required placeholder="Digite a descrição do aviso musical. Use Enter para quebras de linha."></textarea>
-                        <small class="text-gray-500 text-sm mt-1 block">💡 Dica: Pressione Enter para quebrar linha. Não é necessário digitar \n manualmente.</small>
                     </div>
                     <div class="form-group">
                         <label for="avisoMusicaPrioridade">Prioridade:</label>
@@ -450,7 +448,6 @@
                     <div class="form-group">
                         <label for="cleroHistoria">História/Biografia:</label>
                         <textarea id="cleroHistoria" rows="6" required placeholder="Digite um breve histórico ou biografia do membro do clero. Use Enter para quebras de linha."></textarea>
-                        <small class="text-gray-500 text-sm mt-1 block">💡 Dica: Pressione Enter para quebrar linha. Não é necessário digitar \n manualmente.</small>
                     </div>
                     <div class="form-group">
                         <label for="cleroImagem">Foto:</label>
@@ -472,6 +469,7 @@
             <div class="modal-header">
                 <h3 id="pastoralModalTitle">Nova Pastoral</h3>
                 <span class="close" onclick="closeModal('pastoralModal')">&times;</span>
+            </div>
             <div class="modal-body">
                 <form id="pastoralForm">
                     <div class="form-group">
@@ -480,7 +478,8 @@
                     </div>
                     <div class="form-group">
                         <label for="pastoralContato">Contato:</label>
-                        <input type="text" id="pastoralContato" required placeholder="Telefone, email ou WhatsApp">
+                        <textarea id="pastoralContato" rows="3" required placeholder="Digite os contatos da pastoral (telefone, email, WhatsApp). Use Enter para quebras de linha."></textarea>
+                        <small class="text-gray-500 text-sm mt-1 block">💡 Dica: Pressione Enter para quebrar linha. Adicione múltiplos contatos em linhas separadas.</small>
                     </div>
                     <div class="form-group">
                         <label for="pastoralCoordenacao">Coordenação:</label>
@@ -489,7 +488,6 @@
                     <div class="form-group">
                         <label for="pastoralTexto">Descrição:</label>
                         <textarea id="pastoralTexto" rows="6" required placeholder="Descreva as atividades e objetivos da pastoral. Use Enter para quebras de linha."></textarea>
-                        <small class="text-gray-500 text-sm mt-1 block">💡 Dica: Pressione Enter para quebrar linha. Não é necessário digitar \n manualmente.</small>
                     </div>
                 </form>
             </div>
