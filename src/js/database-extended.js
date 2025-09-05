@@ -330,14 +330,6 @@ class ExtendedDatabaseManager extends DatabaseManager {
                     <span class="card-label">Celular:</span>
                     <span class="card-value">${data.celular || 'Não informado'}</span>
                 </div>
-                <div class="card-field">
-                    <span class="card-label">Nascimento:</span>
-                    <span class="card-value">${this.formatDate(data.nascimento)}</span>
-                </div>
-                <div class="card-field">
-                    <span class="card-label">Cidade:</span>
-                    <span class="card-value">${endereco.cidade || 'Não informada'}</span>
-                </div>
             </div>
         `;
         return card;
