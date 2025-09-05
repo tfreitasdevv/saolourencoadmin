@@ -35,6 +35,9 @@ jobs:
         cp -r src/ dist/
         cp index.html dist/
         
+        # Copy assets directory (important for icons)
+        [ -d "assets" ] && cp -r assets/ dist/ || true
+        
         # Copy optional directories if they exist
         [ -d "docs" ] && cp -r docs/ dist/ || true
         [ -d "scripts" ] && cp -r scripts/ dist/ || true
