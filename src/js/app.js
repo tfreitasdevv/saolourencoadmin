@@ -278,7 +278,7 @@ class AdminApp {
             const cargo = document.getElementById('cleroCargo').value;
             const nome = document.getElementById('cleroNome').value;
             const dataOrdenacao = document.getElementById('cleroDataOrdenacao').value;
-            const historia = document.getElementById('cleroHistoria').value;
+            const historia = convertLineBreaksToFlutter(document.getElementById('cleroHistoria').value);
             const imagemFile = document.getElementById('cleroImagem').files[0];
 
             let imagemUrl = '';
@@ -299,7 +299,7 @@ class AdminApp {
 
             const cleroData = {
                 nome: nome,
-                'data ordenação': dataOrdenacao,
+                'data_ordenação': dataOrdenacao,
                 historia: historia
             };
 
@@ -327,7 +327,7 @@ class AdminApp {
             const nome = document.getElementById('pastoralNome').value;
             const contato = document.getElementById('pastoralContato').value;
             const coordenacao = document.getElementById('pastoralCoordenacao').value;
-            const texto = document.getElementById('pastoralTexto').value;
+            const texto = convertLineBreaksToFlutter(document.getElementById('pastoralTexto').value);
 
             const pastoralData = {
                 contato: contato,
@@ -493,7 +493,7 @@ window.openCleroModal = function(data = null, id = null) {
         document.getElementById('cleroCargo').value = id;
         document.getElementById('cleroNome').value = data.nome || '';
         document.getElementById('cleroDataOrdenacao').value = data['data ordenação'] || '';
-        document.getElementById('cleroHistoria').value = data.historia || '';
+        document.getElementById('cleroHistoria').value = convertLineBreaksFromFlutter(data.historia || '');
         app.currentEditingId = id;
         
         if (data.imagem) {
@@ -517,7 +517,7 @@ window.openPastoralModal = function(data = null, id = null) {
         document.getElementById('pastoralNome').value = id;
         document.getElementById('pastoralContato').value = data.contato || '';
         document.getElementById('pastoralCoordenacao').value = data.coordenacao || '';
-        document.getElementById('pastoralTexto').value = data.texto || '';
+        document.getElementById('pastoralTexto').value = convertLineBreaksFromFlutter(data.texto || '');
         app.currentEditingId = id;
     } else {
         title.textContent = 'Nova Pastoral';

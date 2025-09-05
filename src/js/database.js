@@ -342,11 +342,11 @@ class DatabaseManager {
                 </div>
                 <div class="card-field">
                     <span class="card-label">Ordenação:</span>
-                    <span class="card-value">${data['data ordenação'] || 'Não informada'}</span>
+                    <span class="card-value">${data['data_ordenação'] || 'Não informada'}</span>
                 </div>
                 <div class="card-field">
                     <span class="card-label">História:</span>
-                    <span class="card-value">${data.historia ? (data.historia.length > 100 ? data.historia.substring(0, 100) + '...' : data.historia) : 'Sem história'}</span>
+                    <span class="card-value">${data.historia ? (data.historia.replace(/\\n/g, ' ').length > 100 ? data.historia.replace(/\\n/g, ' ').substring(0, 100) + '...' : data.historia.replace(/\\n/g, ' ')) : 'Sem história'}</span>
                 </div>
                 <div class="card-field">
                     <span class="card-label">Foto:</span>
@@ -408,7 +408,7 @@ class DatabaseManager {
                 </div>
                 <div class="card-field">
                     <span class="card-label">Descrição:</span>
-                    <span class="card-value">${data.texto ? (data.texto.length > 100 ? data.texto.substring(0, 100) + '...' : data.texto) : 'Sem descrição'}</span>
+                    <span class="card-value">${data.texto ? (data.texto.replace(/\\n/g, ' ').length > 100 ? data.texto.replace(/\\n/g, ' ').substring(0, 100) + '...' : data.texto.replace(/\\n/g, ' ')) : 'Sem descrição'}</span>
                 </div>
             </div>
         `;

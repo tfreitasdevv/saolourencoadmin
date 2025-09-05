@@ -39,6 +39,16 @@ function convertLineBreaksToHTML(text) {
 - **Placeholder atualizado**: "Digite a descrição do aviso musical. Use Enter para quebras de linha."
 - **Dica visual**: "💡 Dica: Pressione Enter para quebrar linha. Não é necessário digitar \n manualmente."
 
+#### Clero:
+- **Campo história/biografia**: Agora o usuário pode usar Enter normalmente
+- **Placeholder atualizado**: "Digite um breve histórico ou biografia do membro do clero. Use Enter para quebras de linha."
+- **Dica visual**: "💡 Dica: Pressione Enter para quebrar linha. Não é necessário digitar \n manualmente."
+
+#### Pastorais:
+- **Campo descrição**: Agora o usuário pode usar Enter normalmente
+- **Placeholder atualizado**: "Descreva as atividades e objetivos da pastoral. Use Enter para quebras de linha."
+- **Dica visual**: "💡 Dica: Pressione Enter para quebrar linha. Não é necessário digitar \n manualmente."
+
 ### 3. **Fluxo de Dados Atualizado**
 
 #### **Ao Salvar (Create/Update)**:
@@ -62,17 +72,24 @@ Firebase contém "\n" → Conversão para espaços → Exibição limpa e trunca
 - ✅ Adicionadas funções utilitárias de conversão
 - ✅ Modificado `handleAvisoSubmit()` para converter antes de salvar
 - ✅ Modificado `handleAvisoMusicaSubmit()` para converter antes de salvar
+- ✅ Modificado `handleCleroSubmit()` para converter antes de salvar
+- ✅ Modificado `handlePastoralSubmit()` para converter antes de salvar
 - ✅ Modificado `openAvisoModal()` para converter ao carregar
 - ✅ Modificado `openAvisoMusicaModal()` para converter ao carregar
+- ✅ Modificado `openCleroModal()` para converter ao carregar
+- ✅ Modificado `openPastoralModal()` para converter ao carregar
 
 #### `src/pages/index.html`:
 - ✅ Atualizado placeholder do campo `avisoDescricao`
 - ✅ Atualizado placeholder do campo `avisoMusicaDescricao`
+- ✅ Atualizado placeholder do campo `cleroHistoria`
+- ✅ Atualizado placeholder do campo `pastoralTexto`
 - ✅ Adicionadas dicas visuais abaixo dos campos
+- ✅ Habilitada navegação para a seção Clero
 
 #### `src/js/database.js`:
 - ✅ Modificada exibição nos cards para converter "\n" em espaços
-- ✅ Aplicado para avisos paroquiais e avisos musicais
+- ✅ Aplicado para avisos paroquiais, avisos musicais, clero e pastorais
 
 ## 🔄 Como Funciona
 
@@ -118,8 +135,15 @@ Criado arquivo `test-quebra-linha.html` para testar as funções de conversão:
 ## 🎉 Resultado Final
 
 Agora o usuário pode:
-1. **Digitar naturalmente** usando Enter para quebras de linha
-2. **Editar textos existentes** de forma intuitiva
+1. **Digitar naturalmente** usando Enter para quebras de linha em todos os campos de texto longo
+2. **Editar textos existentes** de forma intuitiva em avisos, clero e pastorais
 3. **Ver feedback visual** com dicas e placeholders claros
+4. **Navegar facilmente** pelas seções Clero e Pastorais que foram habilitadas
 
 O sistema automaticamente converte entre os formatos conforme necessário, mantendo a compatibilidade total com o aplicativo Flutter existente.
+
+### 📊 **Campos Beneficiados**:
+- ✅ **Avisos Paroquiais**: Campo "descrição"
+- ✅ **Avisos Musicais**: Campo "descrição" 
+- ✅ **Clero**: Campo "história/biografia"
+- ✅ **Pastorais**: Campo "descrição"

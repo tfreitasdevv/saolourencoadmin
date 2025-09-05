@@ -53,8 +53,9 @@ saolourencoadmin/
 ## 🆕 Melhorias Recentes
 
 ### ✨ Sistema de Quebras de Linha Intuitivo
-- **Nova funcionalidade**: Campos de descrição dos avisos agora aceitam Enter naturalmente
+- **Nova funcionalidade**: Campos de texto longo (descrições, biografias) agora aceitam Enter naturalmente
 - **Benefício**: Usuários não precisam mais digitar `\n` manualmente
+- **Seções incluídas**: Avisos Paroquiais, Avisos Musicais, Clero e Pastorais
 - **Compatibilidade**: Mantém funcionamento com o aplicativo Flutter
 - **Documentação**: [`docs/MELHORIA-QUEBRAS-LINHA.md`](./docs/MELHORIA-QUEBRAS-LINHA.md)
 
