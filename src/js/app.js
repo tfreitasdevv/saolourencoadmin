@@ -558,7 +558,9 @@ window.closeModal = function(modalId) {
     app.closeModal(modalId);
 };
 
-// Close modal when clicking outside
+// Close modal when clicking outside - DESABILITADO para melhor UX
+// Os modais agora só fecham pelos botões "Cancelar" ou "Fechar"
+/*
 window.addEventListener('click', function(event) {
     const modals = document.querySelectorAll('.modal');
     modals.forEach(modal => {
@@ -567,6 +569,7 @@ window.addEventListener('click', function(event) {
         }
     });
 });
+*/
 
 // Utility functions
 window.truncateText = function(text, maxLength = 100) {
