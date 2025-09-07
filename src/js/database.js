@@ -394,9 +394,6 @@ class DatabaseManager {
                     <button class="card-btn card-btn-edit" onclick="editPastoral('${id}')" title="Editar">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="card-btn card-btn-delete" onclick="deletePastoral('${id}')" title="Excluir">
-                        <i class="fas fa-trash"></i>
-                    </button>
                 </div>
             </div>
             <div class="card-body">

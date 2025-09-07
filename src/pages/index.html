@@ -500,7 +500,8 @@
                 <form id="pastoralForm">
                     <div class="form-group">
                         <label for="pastoralNome">Nome da Pastoral:</label>
-                        <input type="text" id="pastoralNome" required placeholder="Ex: Pastoral da Juventude, Pastoral Familiar">
+                        <input type="text" id="pastoralNome" readonly class="bg-gray-100 cursor-not-allowed" placeholder="Ex: Pastoral da Juventude, Pastoral Familiar">
+                        <small class="text-gray-600">Este campo não pode ser editado para manter consistência com o banco de dados.</small>
                     </div>
                     <div class="form-group">
                         <label for="pastoralContato">Contato:</label>
