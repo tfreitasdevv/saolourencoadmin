@@ -182,6 +182,12 @@ class AdminApp {
             await this.handleHorarioSubmit();
         });
 
+        // Confissão form
+        document.getElementById('confissaoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await this.handleConfissaoSubmit();
+        });
+
         // Image preview handlers
         document.getElementById('avisoImagem').addEventListener('change', (e) => {
             this.previewImage(e.target, 'avisoImagemPreview');
@@ -380,6 +386,26 @@ class AdminApp {
         }
     }
 
+    async handleConfissaoSubmit() {
+        try {
+            const titulo = document.getElementById('confissaoTitulo').value;
+            const texto = document.getElementById('confissaoTexto').value;
+            const id = document.getElementById('confissaoId').value;
+
+            const confissaoData = {
+                titulo: titulo,
+                texto: texto
+            };
+
+            await window.dbManager.saveConfissao(id, confissaoData);
+            this.closeModal('confissaoModal');
+            this.resetConfissaoForm();
+        } catch (error) {
+            console.error('Erro no submit da confissão:', error);
+            showError('Erro ao salvar confissão');
+        }
+    }
+
     previewImage(input, previewId) {
         const preview = document.getElementById(previewId);
         preview.innerHTML = '';
@@ -422,6 +448,11 @@ class AdminApp {
 
     resetHorarioForm() {
         document.getElementById('horarioForm').reset();
+        this.currentEditingId = null;
+    }
+
+    resetConfissaoForm() {
+        document.getElementById('confissaoForm').reset();
         this.currentEditingId = null;
     }
 
@@ -552,6 +583,26 @@ window.openCapelaModal = function(data = null, id = null) {
 
 window.openMusicaModal = function(data = null, id = null) {
     showInfo('Modal de Músicas será implementado em breve');
+};
+
+window.openConfissaoModal = function(data = null, id = null) {
+    const modal = document.getElementById('confissaoModal');
+    const title = document.getElementById('confissaoModalTitle');
+    
+    if (data && id) {
+        // Edit mode
+        title.textContent = 'Editar Confissão';
+        document.getElementById('confissaoTitulo').value = data.titulo || '';
+        document.getElementById('confissaoTexto').value = data.texto || '';
+        document.getElementById('confissaoId').value = id;
+        app.currentEditingId = id;
+    } else {
+        // Create mode (não deve ser usado para confissões, mas incluído por completude)
+        title.textContent = 'Nova Confissão';
+        app.resetConfissaoForm();
+    }
+    
+    modal.classList.remove('hidden');
 };
 
 window.closeModal = function(modalId) {

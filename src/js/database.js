@@ -9,7 +9,8 @@ class DatabaseManager {
             horarios: 'horarios_missas',
             capelas: 'imagens_capelas',
             musicas: 'musicas_mes_corrente',
-            usuarios: 'usuarios'
+            usuarios: 'usuarios',
+            confissoes: 'confissoes'
         };
     }
 
@@ -63,6 +64,7 @@ class DatabaseManager {
             await this.loadCapelas();
             await this.loadMusicas();
             await this.loadUsuarios();
+            await this.loadConfissoes();
             console.log('✅ Todas as outras coleções carregadas');
         } catch (error) {
             console.error('❌ Erro ao carregar outras coleções:', error);
@@ -473,6 +475,101 @@ class DatabaseManager {
         return card;
     }
 
+    // Confissões
+    async loadConfissoes() {
+        try {
+            console.log('📿 [DEBUG] Iniciando carregamento de confissões...');
+            
+            const cardsContainer = document.getElementById('confissoesCards');
+            const emptyState = document.getElementById('confissoesEmpty');
+            
+            if (!cardsContainer) {
+                console.log('📿 [DEBUG] Elemento confissoesCards não encontrado - seção não visível');
+                return;
+            }
+            
+            const snapshot = await db.collection(this.collections.confissoes)
+                .orderBy(firebase.firestore.FieldPath.documentId())
+                .get();
+            
+            console.log('📿 [DEBUG] Snapshot confissões obtido:', snapshot.size, 'documentos');
+            cardsContainer.innerHTML = '';
+            
+            if (snapshot.empty) {
+                console.log('📭 [DEBUG] Nenhuma confissão encontrada, mostrando estado vazio');
+                if (emptyState) emptyState.style.display = 'block';
+            } else {
+                console.log('📄 [DEBUG] Renderizando', snapshot.size, 'confissões');
+                if (emptyState) emptyState.style.display = 'none';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    console.log('📄 [DEBUG] Processando confissão:', doc.id, data);
+                    const card = this.createConfissaoCard(doc.id, data);
+                    cardsContainer.appendChild(card);
+                });
+            }
+        } catch (error) {
+            console.error('❌ [DEBUG] Erro ao carregar confissões:', error);
+            showError('Erro ao carregar confissões: ' + error.message);
+        }
+    }
+
+    createConfissaoCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        
+        // Definir títulos mais amigáveis para cada seção
+        const sectionTitles = {
+            'primeira_secao': 'Primeira Seção',
+            'segunda_secao': 'Segunda Seção', 
+            'terceira_secao': 'Terceira Seção',
+            'quarta_secao': 'Quarta Seção'
+        };
+        
+        const displayTitle = sectionTitles[id] || data.titulo || 'Seção sem título';
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <h3 class="card-title">${displayTitle}</h3>
+                <div class="card-actions">
+                    <button class="card-btn card-btn-edit" onclick="editConfissao('${id}')" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-field">
+                    <span class="card-label">Título:</span>
+                    <span class="card-value">${data.titulo || 'Sem título'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">Texto:</span>
+                    <span class="card-value">${data.texto ? (data.texto.length > 150 ? data.texto.substring(0, 150) + '...' : data.texto) : 'Sem texto'}</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-label">ID:</span>
+                    <span class="card-value">${id}</span>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+
+    // Salvar confissão
+    async saveConfissao(id, data) {
+        try {
+            this.showLoading();
+            await db.collection(this.collections.confissoes).doc(id).set(data);
+            await this.loadConfissoes();
+            showSuccess('Confissão salva com sucesso!');
+        } catch (error) {
+            console.error('Erro ao salvar confissão:', error);
+            showError('Erro ao salvar confissão');
+        } finally {
+            this.hideLoading();
+        }
+    }
+
     // File upload
     async uploadImage(file, path) {
         try {
@@ -524,4 +621,13 @@ window.editAvisoMusica = async function(id) {
 
 window.deleteAvisoMusica = function(id) {
     // Implementar função similar
+};
+
+window.editConfissao = async function(id) {
+    const result = await window.dbManager.getDocument('confissoes', id);
+    if (result.success) {
+        openConfissaoModal(result.data, id);
+    } else {
+        showError('Erro ao carregar confissão');
+    }
 };

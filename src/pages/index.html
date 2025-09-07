@@ -101,6 +101,10 @@
                         <i class="fas fa-hands-helping text-green-500"></i>
                         <span>Pastorais</span>
                     </a>
+                    <a href="#" data-section="confissoes" class="mobile-nav-link">
+                        <i class="fas fa-cross text-purple-600"></i>
+                        <span>Confissões</span>
+                    </a>
                     <!-- <a href="#" data-section="horarios" class="mobile-nav-link">
                         <i class="fas fa-clock text-orange-500"></i>
                         <span>Horários das Missas</span>
@@ -140,6 +144,9 @@
                         </a></li> -->
                         <li><a href="#" data-section="pastorais" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
                             <i class="fas fa-hands-helping text-green-500"></i> Pastorais
+                        </a></li>
+                        <li><a href="#" data-section="confissoes" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
+                            <i class="fas fa-cross text-purple-600"></i> Confissões
                         </a></li>
                         <!-- <li><a href="#" data-section="horarios" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-parish-blue-50 hover:text-parish-blue-600 transition-colors duration-200 border-l-4 border-transparent">
                             <i class="fas fa-clock text-orange-500"></i> Horários das Missas
@@ -249,6 +256,25 @@
                             <i class="fas fa-hands-helping"></i>
                             <h3>Nenhuma pastoral cadastrada</h3>
                             <p>Clique no botão "Nova Pastoral" para adicionar a primeira pastoral.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Confissões Section -->
+                <section id="confissoes-section" class="content-section">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-gray-200 gap-4">
+                        <h2 class="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-cross text-purple-600"></i> Confissões
+                        </h2>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div id="confissoesCards" class="cards-container">
+                            <!-- Cards serão gerados dinamicamente pelo JavaScript -->
+                        </div>
+                        <div id="confissoesEmpty" class="cards-empty" style="display: none;">
+                            <i class="fas fa-cross"></i>
+                            <h3>Nenhuma confissão cadastrada</h3>
+                            <p>As seções de confissão serão exibidas aqui quando cadastradas no Firebase.</p>
                         </div>
                     </div>
                 </section>
@@ -494,6 +520,37 @@
             <div class="modal-buttons">
                 <button type="button" class="btn-secondary" onclick="closeModal('pastoralModal')">Cancelar</button>
                 <button type="submit" class="btn-primary" form="pastoralForm">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Confissões -->
+    <div id="confissaoModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="confissaoModalTitle">Editar Confissão</h3>
+                <span class="close" onclick="closeModal('confissaoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="confissaoForm">
+                    <div class="form-group">
+                        <label for="confissaoTitulo">Título:</label>
+                        <input type="text" id="confissaoTitulo" required placeholder="Digite o título da seção">
+                    </div>
+                    <div class="form-group">
+                        <label for="confissaoTexto">Texto:</label>
+                        <textarea id="confissaoTexto" rows="6" required placeholder="Digite o texto da confissão. Use Enter para quebras de linha."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="confissaoId">ID da Seção:</label>
+                        <input type="text" id="confissaoId" readonly placeholder="ID será preenchido automaticamente">
+                        <small class="text-gray-600">Este campo não pode ser editado.</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="closeModal('confissaoModal')">Cancelar</button>
+                <button type="submit" class="btn-primary" form="confissaoForm">Salvar</button>
             </div>
         </div>
     </div>
